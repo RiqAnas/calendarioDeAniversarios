@@ -9,7 +9,7 @@ class Databaseutil {
       path.join(dbpath, 'birthday.db'),
       onCreate: (db, version) async {
         await db.execute(
-          'CREATE TABLE persons (id TEXT PRIMARY KEY, nome TEXT NOT NULL, nascimento TEXT NOT NULL, idade INTEGER)',
+          'CREATE TABLE persons (id TEXT PRIMARY KEY, nome TEXT NOT NULL, nascimento TEXT NOT NULL, idade INTEGER, ativa INTEGER NOT NULL)',
         );
       },
       version: 1,
