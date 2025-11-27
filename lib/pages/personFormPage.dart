@@ -16,6 +16,9 @@ class _PersonformpageState extends State<Personformpage> {
   final TextEditingController _controller = TextEditingController();
 
   DateTime? _nascimento;
+  bool _initialized = false;
+  bool _edit = false;
+  Person? _pessoa;
 
   _showDatePicker() {
     showDatePicker(
@@ -34,11 +37,27 @@ class _PersonformpageState extends State<Personformpage> {
   }
 
   @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    if (!_initialized) {
+      Object? editInd = ModalRoute.of(context)!.settings.arguments;
+      if (editInd != null) {
+        _pessoa = editInd as Person;
+        _edit = true;
+        _nascimento = _pessoa?.nascimento ?? DateTime.now();
+        _controller.text = _pessoa?.nome ?? '';
+      }
+
+      _initialized = true;
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
     // TODO: implement build
     return Scaffold(
       appBar: AppBar(
-        title: Text("Adicionar"),
+        title: Text(_edit ? "Editar" : "Adicionar"),
         centerTitle: true,
         actions: [
           IconButton(
@@ -55,10 +74,15 @@ class _PersonformpageState extends State<Personformpage> {
                 ativa: 1,
               );
 
-              Provider.of<Personservice>(
-                context,
-                listen: false,
-              ).insertPerson(person);
+              _edit
+                  ? Provider.of<Personservice>(
+                      context,
+                      listen: false,
+                    ).updatePerson(person)
+                  : Provider.of<Personservice>(
+                      context,
+                      listen: false,
+                    ).insertPerson(person);
 
               Navigator.of(context).pop();
             },
