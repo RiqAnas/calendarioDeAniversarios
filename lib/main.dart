@@ -1,3 +1,4 @@
+import 'package:aniversariodois/core/services/noteService.dart';
 import 'package:aniversariodois/core/services/personService.dart';
 import 'package:aniversariodois/core/utils/routes.dart';
 import 'package:aniversariodois/pages/homePage.dart';
@@ -15,7 +16,10 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
-      providers: [ChangeNotifierProvider(create: (_) => Personservice())],
+      providers: [
+        ChangeNotifierProvider(create: (_) => Personservice()),
+        ChangeNotifierProvider(create: (_) => Noteservice()),
+      ],
       child: MaterialApp(
         title: 'Aniversarios',
         debugShowCheckedModeBanner: false,

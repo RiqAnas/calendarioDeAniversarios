@@ -12,8 +12,12 @@ class Databaseutil {
         await db.execute(
           'CREATE TABLE persons (id TEXT PRIMARY KEY, nome TEXT NOT NULL, nascimento TEXT NOT NULL, idade INTEGER, ativa INTEGER NOT NULL)',
         );
+
+        await db.execute(
+          'CREATE TABLE notes (id TEXT PRIMARY KEY, personId TEXT NOT NULL, title TEXT NOT NULL, description TEXT NOT NULL, mark INTEGER NOT NULL, marked INTEGER, date TEXT, FOREIGN KEY (personId) REFERENCES persons (id))',
+        );
       },
-      version: 1,
+      version: 2,
     );
   }
 
@@ -21,6 +25,15 @@ class Databaseutil {
     final db = await Databaseutil.database();
 
     return db.query(table);
+  }
+
+  static Future<List<Map<String, dynamic>>> loadPerPerson(
+    String table,
+    String personId,
+  ) async {
+    final db = await Databaseutil.database();
+
+    return db.query(table, where: 'personId = ?', whereArgs: [personId]);
   }
 
   static Future<List<Map<String, dynamic>>> loadSingle(

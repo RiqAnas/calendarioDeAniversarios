@@ -67,7 +67,7 @@ class _PersonformpageState extends State<Personformpage> {
               }
 
               Person person = Person(
-                id: Random().nextDouble().toString(),
+                id: _edit ? _pessoa!.id : Random().nextDouble().toString(),
                 nome: _controller.text,
                 nascimento: _nascimento,
                 idade: Calc.ageCalc(_nascimento!),
