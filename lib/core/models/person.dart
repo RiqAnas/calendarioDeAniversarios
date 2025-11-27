@@ -1,5 +1,5 @@
 class Person {
-  String? id;
+  String id;
   String? nome;
   DateTime? nascimento;
   int? idade;
@@ -15,6 +15,7 @@ class Person {
 
   Map<String, dynamic> toJson() {
     return {
+      'id': id,
       'nome': nome,
       'nascimento': nascimento!.toIso8601String(),
       'idade': idade,

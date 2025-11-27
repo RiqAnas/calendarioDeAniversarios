@@ -1,22 +1,32 @@
 import 'package:aniversariodois/core/models/person.dart';
+import 'package:aniversariodois/core/utils/calc.dart';
 import 'package:aniversariodois/core/utils/databaseUtil.dart';
 import 'package:flutter/material.dart';
 
 class Personservice extends ChangeNotifier {
-  final List<Person> _persons = [];
+  List<Person> _persons = [];
 
   List<Person> get persons {
     return [..._persons];
   }
 
-  Future<void> loadPersons() async {
+  Future<List<Person>> loadPersons() async {
+    _persons.clear();
     try {
       final list = await Databaseutil.loadTable('persons');
 
       for (Map<String, dynamic> obj in list) {
         _persons.add(Person.fromJson(obj));
       }
-      notifyListeners();
+
+      _persons.map((pes) async {
+        int novaIdade = Calc.ageCalc(pes.nascimento!);
+        if (novaIdade != pes.idade) {
+          pes.idade = novaIdade;
+          await Databaseutil.update('persons', pes.toJson(), pes.id);
+        }
+      });
+      return _persons;
     } catch (error) {
       throw 'Erro inesperado ao carregar pessoas';
     }
@@ -43,7 +53,7 @@ class Personservice extends ChangeNotifier {
 
   Future<void> updatePerson(Person person) async {
     try {
-      await Databaseutil.update('persons', person.toJson(), person.id!);
+      await Databaseutil.update('persons', person.toJson(), person.id);
       notifyListeners();
     } catch (error) {
       throw 'Erro ao tentar atualizar pessoa';
@@ -59,7 +69,7 @@ class Personservice extends ChangeNotifier {
         idade: person.idade,
         ativa: 0,
       );
-      await Databaseutil.update('persons', persona.toJson(), person.id!);
+      await Databaseutil.update('persons', persona.toJson(), person.id);
       notifyListeners();
     } catch (error) {
       throw 'Erro ao tentar deletar informações da pessoa';
@@ -68,7 +78,7 @@ class Personservice extends ChangeNotifier {
 
   Future<void> deletePerson(Person person) async {
     try {
-      await Databaseutil.delete('persons', person.id!);
+      await Databaseutil.delete('persons', person.id);
       notifyListeners();
     } catch (error) {
       throw 'Erro ao tentar deletar informações da pessoa';

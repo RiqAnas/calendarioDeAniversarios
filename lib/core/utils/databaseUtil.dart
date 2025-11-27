@@ -1,5 +1,6 @@
 import 'package:path/path.dart' as path;
 import 'package:sqflite/sqflite.dart' as sql;
+import 'package:sqflite/sql.dart';
 
 class Databaseutil {
   static Future<sql.Database> database() async {
@@ -34,7 +35,7 @@ class Databaseutil {
   static Future<void> insert(String table, Map<String, dynamic> data) async {
     final db = await Databaseutil.database();
 
-    await db.insert(table, data);
+    await db.insert(table, data, conflictAlgorithm: ConflictAlgorithm.replace);
   }
 
   static Future<void> update(
