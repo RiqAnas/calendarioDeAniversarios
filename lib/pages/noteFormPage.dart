@@ -82,7 +82,6 @@ class _NoteformpageState extends State<Noteformpage> {
                 ),
               ),
               TextField(
-                maxLength: 500,
                 maxLines: null,
                 clipBehavior: Clip.antiAlias,
                 keyboardType: TextInputType.multiline,

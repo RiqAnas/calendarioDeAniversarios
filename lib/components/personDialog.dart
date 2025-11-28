@@ -50,7 +50,12 @@ class Persondialog extends StatelessWidget {
                       ),
                     ),
                     const Spacer(),
-                    TextButton(onPressed: () {}, child: Text("Ver todas")),
+                    TextButton(
+                      onPressed: () => Navigator.of(
+                        context,
+                      ).pushNamed(Routes.NOTEMENU, arguments: person),
+                      child: Text("Ver todas"),
+                    ),
                   ],
                 ),
                 FutureBuilder(

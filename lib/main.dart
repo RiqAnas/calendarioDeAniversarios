@@ -3,6 +3,7 @@ import 'package:aniversariodois/core/services/personService.dart';
 import 'package:aniversariodois/core/utils/routes.dart';
 import 'package:aniversariodois/pages/homePage.dart';
 import 'package:aniversariodois/pages/noteFormPage.dart';
+import 'package:aniversariodois/pages/notesMenuPage.dart';
 import 'package:aniversariodois/pages/personFormPage.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -32,6 +33,7 @@ class MyApp extends StatelessWidget {
           Routes.HOME: (_) => Homepage(),
           Routes.FORM: (_) => Personformpage(),
           Routes.NOTEFORM: (_) => Noteformpage(),
+          Routes.NOTEMENU: (_) => Notesmenupage(),
         },
       ),
     );
