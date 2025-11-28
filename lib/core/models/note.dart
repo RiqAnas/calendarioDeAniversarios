@@ -22,7 +22,7 @@ class Note {
       'id': id,
       'personId': personid,
       'title': title,
-      'decription': description,
+      'description': description,
       'mark': mark,
       'marked': marked,
       'date': date?.toIso8601String(),
@@ -37,7 +37,7 @@ class Note {
       description: data['description'],
       mark: data['mark'],
       marked: data['marked'],
-      date: DateTime.tryParse(data['date']),
+      date: data['date'] == null ? null : DateTime.parse(data['date']),
     );
   }
 }

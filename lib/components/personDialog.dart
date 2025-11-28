@@ -1,5 +1,7 @@
+import 'package:aniversariodois/components/noteListTile.dart';
 import 'package:aniversariodois/core/models/person.dart';
 import 'package:aniversariodois/core/services/noteService.dart';
+import 'package:aniversariodois/core/utils/routes.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
@@ -38,9 +40,18 @@ class Persondialog extends StatelessWidget {
                 const SizedBox(height: 15),
                 Text('Idade: ${person.idade} anos'),
                 const SizedBox(height: 30),
-                const Text(
-                  'Notas',
-                  style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
+                Row(
+                  children: [
+                    const Text(
+                      'Notas',
+                      style: TextStyle(
+                        fontSize: 25,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    const Spacer(),
+                    TextButton(onPressed: () {}, child: Text("Ver todas")),
+                  ],
                 ),
                 FutureBuilder(
                   future: Provider.of<Noteservice>(
@@ -52,11 +63,14 @@ class Persondialog extends StatelessWidget {
                     } else if (!note.hasData || note.data!.isEmpty) {
                       return Container();
                     } else {
-                      return ListView.builder(
-                        itemCount: note.data!.length,
-                        itemBuilder: (context, index) {
-                          return Text(note.data![index].title);
-                        },
+                      return SizedBox(
+                        height: 300,
+                        child: ListView.builder(
+                          itemCount: 4,
+                          itemBuilder: (context, index) {
+                            return Notelisttile(note: note.data![index]);
+                          },
+                        ),
                       );
                     }
                   },
@@ -65,7 +79,9 @@ class Persondialog extends StatelessWidget {
                   children: [
                     Expanded(
                       child: IconButton(
-                        onPressed: () {},
+                        onPressed: () => Navigator.of(
+                          context,
+                        ).pushNamed(Routes.NOTEFORM, arguments: person),
                         icon: Icon(Icons.add_outlined),
                       ),
                     ),

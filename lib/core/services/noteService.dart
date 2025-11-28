@@ -28,7 +28,7 @@ class Noteservice extends ChangeNotifier {
       Databaseutil.insert('notes', note.toJson());
       notifyListeners();
     } catch (error) {
-      throw 'Erro ao inserir nota';
+      throw 'Erro ao inserir notaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa';
     }
   }
 }
