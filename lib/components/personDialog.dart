@@ -6,10 +6,24 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
-class Persondialog extends StatelessWidget {
+class Persondialog extends StatefulWidget {
   final Person person;
 
   Persondialog({required this.person});
+
+  @override
+  State<Persondialog> createState() => _PersondialogState();
+}
+
+class _PersondialogState extends State<Persondialog> {
+  @override
+  void initState() {
+    super.initState();
+    Provider.of<Noteservice>(
+      context,
+      listen: false,
+    ).loadNotesperPerson(widget.person.id);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -30,15 +44,15 @@ class Persondialog extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  person.nome!,
+                  widget.person.nome!,
                   style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
                 ),
                 const SizedBox(height: 15),
                 Text(
-                  'Data de nascimento: ${DateFormat('dd/MM/yyyy').format(person.nascimento!)}',
+                  'Data de nascimento: ${DateFormat('dd/MM/yyyy').format(widget.person.nascimento!)}',
                 ),
                 const SizedBox(height: 15),
-                Text('Idade: ${person.idade} anos'),
+                Text('Idade: ${widget.person.idade} anos'),
                 const SizedBox(height: 30),
                 Row(
                   children: [
@@ -53,18 +67,16 @@ class Persondialog extends StatelessWidget {
                     TextButton(
                       onPressed: () => Navigator.of(
                         context,
-                      ).pushNamed(Routes.NOTEMENU, arguments: person),
+                      ).pushNamed(Routes.NOTEMENU, arguments: widget.person),
                       child: Text("Ver todas"),
                     ),
                   ],
                 ),
-                FutureBuilder(
-                  future: Provider.of<Noteservice>(
-                    context,
-                  ).loadNotesperPerson(person.id),
+                StreamBuilder(
+                  stream: Provider.of<Noteservice>(context).notes,
                   builder: (context, note) {
                     if (note.connectionState == ConnectionState.waiting) {
-                      return Center(child: CircularProgressIndicator());
+                      return Container();
                     } else if (!note.hasData || note.data!.isEmpty) {
                       return Container();
                     } else {
@@ -79,7 +91,7 @@ class Persondialog extends StatelessWidget {
                               onTap: () => Navigator.of(context).pushNamed(
                                 Routes.NOTEFORM,
                                 arguments: {
-                                  'person': person,
+                                  'person': widget.person,
                                   'note': note.data![index],
                                 },
                               ),
@@ -97,7 +109,7 @@ class Persondialog extends StatelessWidget {
                       child: IconButton(
                         onPressed: () => Navigator.of(context).pushNamed(
                           Routes.NOTEFORM,
-                          arguments: {'person': person, 'note': null},
+                          arguments: {'person': widget.person, 'note': null},
                         ),
                         icon: Icon(Icons.add_outlined),
                       ),

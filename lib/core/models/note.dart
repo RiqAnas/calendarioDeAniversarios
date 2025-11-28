@@ -4,6 +4,7 @@ class Note {
   String title;
   String description;
   int mark;
+  DateTime createdAt;
   int? marked;
   DateTime? date;
 
@@ -13,6 +14,7 @@ class Note {
     required this.title,
     required this.description,
     required this.mark,
+    required this.createdAt,
     this.marked,
     this.date,
   });
@@ -26,6 +28,7 @@ class Note {
       'mark': mark,
       'marked': marked,
       'date': date?.toIso8601String(),
+      'createdAt': createdAt.toIso8601String(),
     };
   }
 
@@ -37,6 +40,7 @@ class Note {
       description: data['description'],
       mark: data['mark'],
       marked: data['marked'],
+      createdAt: DateTime.parse(data['createdAt']),
       date: data['date'] == null ? null : DateTime.parse(data['date']),
     );
   }

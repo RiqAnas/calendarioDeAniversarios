@@ -1,5 +1,4 @@
 import 'package:aniversariodois/components/noteGridTile.dart';
-import 'package:aniversariodois/core/models/note.dart';
 import 'package:aniversariodois/core/models/person.dart';
 import 'package:aniversariodois/core/services/noteService.dart';
 import 'package:aniversariodois/core/utils/routes.dart';
@@ -16,11 +15,10 @@ class Notesgrid extends StatefulWidget {
 }
 
 class _NotesgridState extends State<Notesgrid> {
-  late Future<List<Note>> _dados;
   @override
   void initState() {
     super.initState();
-    _dados = Provider.of<Noteservice>(
+    Provider.of<Noteservice>(
       context,
       listen: false,
     ).loadNotesperPerson(widget.person.id);
@@ -29,8 +27,8 @@ class _NotesgridState extends State<Notesgrid> {
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
-    return FutureBuilder(
-      future: _dados,
+    return StreamBuilder(
+      stream: Provider.of<Noteservice>(context, listen: false).notes,
       builder: (context, notes) {
         if (notes.connectionState == ConnectionState.waiting) {
           return const Center(child: CircularProgressIndicator());
@@ -48,13 +46,15 @@ class _NotesgridState extends State<Notesgrid> {
             itemCount: notes.data!.length,
             itemBuilder: (context, index) {
               return GestureDetector(
-                onTap: () => Navigator.of(context).pushNamed(
-                  Routes.NOTEFORM,
-                  arguments: {
-                    'person': widget.person,
-                    'note': notes.data![index],
-                  },
-                ),
+                onTap: () async {
+                  await Navigator.of(context).pushNamed(
+                    Routes.NOTEFORM,
+                    arguments: {
+                      'person': widget.person,
+                      'note': notes.data![index],
+                    },
+                  );
+                },
                 child: Notegridtile(note: notes.data![index]),
               );
             },

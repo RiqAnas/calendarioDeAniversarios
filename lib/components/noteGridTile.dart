@@ -1,5 +1,6 @@
 import 'package:aniversariodois/core/models/note.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 class Notegridtile extends StatelessWidget {
   final Note note;
@@ -19,6 +20,10 @@ class Notegridtile extends StatelessWidget {
               note.title,
               overflow: TextOverflow.ellipsis,
               style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+            ),
+            Text(
+              DateFormat('dd/MM/yyyy hh:mm').format(note.createdAt),
+              style: TextStyle(fontSize: 10, color: Colors.grey),
             ),
             const SizedBox(height: 10),
             Text(

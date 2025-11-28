@@ -15,10 +15,10 @@ class Databaseutil {
         );
 
         await db.execute(
-          'CREATE TABLE notes (id TEXT PRIMARY KEY, personId TEXT NOT NULL, title TEXT NOT NULL, description TEXT NOT NULL, mark INTEGER NOT NULL, marked INTEGER, date TEXT, FOREIGN KEY (personId) REFERENCES persons (id))',
+          'CREATE TABLE notes (id TEXT PRIMARY KEY, personId TEXT NOT NULL, title TEXT NOT NULL, description TEXT NOT NULL, mark INTEGER NOT NULL, createdAt TEXT NOT NULL, marked INTEGER, date TEXT, FOREIGN KEY (personId) REFERENCES persons (id))',
         );
       },
-      version: 2,
+      version: 3,
     );
   }
 
@@ -71,6 +71,6 @@ class Databaseutil {
   static Future<void> deletePerPerson(String table, String id) async {
     final db = await Databaseutil.database();
 
-    await db.delete(table, where: 'id = ?', whereArgs: [id]);
+    await db.delete(table, where: 'personId = ?', whereArgs: [id]);
   }
 }
