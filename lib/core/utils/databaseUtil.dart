@@ -1,6 +1,7 @@
 import 'package:path/path.dart' as path;
 import 'package:sqflite/sqflite.dart' as sql;
 import 'package:sqflite/sql.dart';
+import 'package:sqflite/sqlite_api.dart';
 
 class Databaseutil {
   static Future<sql.Database> database() async {
@@ -62,6 +63,12 @@ class Databaseutil {
   }
 
   static Future<void> delete(String table, String id) async {
+    final db = await Databaseutil.database();
+
+    await db.delete(table, where: 'id = ?', whereArgs: [id]);
+  }
+
+  static Future<void> deletePerPerson(String table, String id) async {
     final db = await Databaseutil.database();
 
     await db.delete(table, where: 'id = ?', whereArgs: [id]);

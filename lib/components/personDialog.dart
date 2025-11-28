@@ -71,7 +71,9 @@ class Persondialog extends StatelessWidget {
                       return SizedBox(
                         height: 300,
                         child: ListView.builder(
-                          itemCount: 4,
+                          itemCount: note.data!.length < 4
+                              ? note.data!.length
+                              : 4,
                           itemBuilder: (context, index) {
                             return GestureDetector(
                               onTap: () => Navigator.of(context).pushNamed(

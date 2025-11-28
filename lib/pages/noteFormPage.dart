@@ -53,6 +53,11 @@ class _NoteformpageState extends State<Noteformpage> {
         title: Text(!_isEdit ? 'Adicionar Nota' : 'Nota'),
         centerTitle: true,
         actions: [
+          if (_isEdit)
+            IconButton(
+              onPressed: () {},
+              icon: Icon(Icons.delete, color: Colors.red),
+            ),
           IconButton(
             onPressed: () async {
               if (_titleController.text.isEmpty ||

@@ -1,0 +1,66 @@
+import 'package:aniversariodois/components/noteGridTile.dart';
+import 'package:aniversariodois/core/models/note.dart';
+import 'package:aniversariodois/core/models/person.dart';
+import 'package:aniversariodois/core/services/noteService.dart';
+import 'package:aniversariodois/core/utils/routes.dart';
+import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+
+class Notesgrid extends StatefulWidget {
+  final Person person;
+
+  Notesgrid({required this.person});
+
+  @override
+  State<Notesgrid> createState() => _NotesgridState();
+}
+
+class _NotesgridState extends State<Notesgrid> {
+  late Future<List<Note>> _dados;
+  @override
+  void initState() {
+    super.initState();
+    _dados = Provider.of<Noteservice>(
+      context,
+      listen: false,
+    ).loadNotesperPerson(widget.person.id);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    // TODO: implement build
+    return FutureBuilder(
+      future: _dados,
+      builder: (context, notes) {
+        if (notes.connectionState == ConnectionState.waiting) {
+          return const Center(child: CircularProgressIndicator());
+        } else if (!notes.hasData || notes.data!.isEmpty) {
+          return const Center(child: Text("Sem notas"));
+        } else {
+          return GridView.builder(
+            gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
+              maxCrossAxisExtent: MediaQuery.widthOf(context) * 0.5,
+              mainAxisExtent: MediaQuery.heightOf(context) * 0.22,
+              childAspectRatio: 3 / 2,
+              mainAxisSpacing: 8,
+              crossAxisSpacing: 10,
+            ),
+            itemCount: notes.data!.length,
+            itemBuilder: (context, index) {
+              return GestureDetector(
+                onTap: () => Navigator.of(context).pushNamed(
+                  Routes.NOTEFORM,
+                  arguments: {
+                    'person': widget.person,
+                    'note': notes.data![index],
+                  },
+                ),
+                child: Notegridtile(note: notes.data![index]),
+              );
+            },
+          );
+        }
+      },
+    );
+  }
+}

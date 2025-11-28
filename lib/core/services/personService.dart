@@ -78,7 +78,9 @@ class Personservice extends ChangeNotifier {
 
   Future<void> deletePerson(Person person) async {
     try {
+      await Databaseutil.deletePerPerson('notes', person.id);
       await Databaseutil.delete('persons', person.id);
+
       notifyListeners();
     } catch (error) {
       throw 'Erro ao tentar deletar informações da pessoa';
