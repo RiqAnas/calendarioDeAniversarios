@@ -73,7 +73,16 @@ class Persondialog extends StatelessWidget {
                         child: ListView.builder(
                           itemCount: 4,
                           itemBuilder: (context, index) {
-                            return Notelisttile(note: note.data![index]);
+                            return GestureDetector(
+                              onTap: () => Navigator.of(context).pushNamed(
+                                Routes.NOTEFORM,
+                                arguments: {
+                                  'person': person,
+                                  'note': note.data![index],
+                                },
+                              ),
+                              child: Notelisttile(note: note.data![index]),
+                            );
                           },
                         ),
                       );
@@ -84,9 +93,10 @@ class Persondialog extends StatelessWidget {
                   children: [
                     Expanded(
                       child: IconButton(
-                        onPressed: () => Navigator.of(
-                          context,
-                        ).pushNamed(Routes.NOTEFORM, arguments: person),
+                        onPressed: () => Navigator.of(context).pushNamed(
+                          Routes.NOTEFORM,
+                          arguments: {'person': person, 'note': null},
+                        ),
                         icon: Icon(Icons.add_outlined),
                       ),
                     ),

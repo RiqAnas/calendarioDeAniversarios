@@ -13,11 +13,19 @@ class Notelisttile extends StatelessWidget {
       child: Padding(
         padding: const EdgeInsets.all(15.0),
         child: Row(
+          mainAxisAlignment: MainAxisAlignment.start,
           children: [
             Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(note.title, style: TextStyle(fontWeight: FontWeight.bold)),
-                Text(note.description, style: TextStyle(color: Colors.grey)),
+                SizedBox(
+                  child: Text(
+                    note.description,
+                    overflow: TextOverflow.ellipsis,
+                    style: TextStyle(color: Colors.grey),
+                  ),
+                ),
               ],
             ),
           ],

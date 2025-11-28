@@ -25,10 +25,19 @@ class Noteservice extends ChangeNotifier {
 
   Future<void> insertNote(Note note) async {
     try {
-      Databaseutil.insert('notes', note.toJson());
+      await Databaseutil.insert('notes', note.toJson());
       notifyListeners();
     } catch (error) {
       throw 'Erro ao inserir notaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa';
+    }
+  }
+
+  Future<void> updateNote(Note note) async {
+    try {
+      await Databaseutil.update('notes', note.toJson(), note.id);
+      notifyListeners();
+    } catch (error) {
+      throw 'Erro ado editar nota';
     }
   }
 }

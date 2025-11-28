@@ -19,15 +19,38 @@ class _NoteformpageState extends State<Noteformpage> {
 
   DateTime? _markedAt;
 
+  Person? _person;
+  Note? _note;
+
   bool _isMark = false;
+  bool _initialized = false;
+  bool _isEdit = false;
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    if (!_initialized) {
+      final map =
+          ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>;
+      if (map['note'] == null) {
+        _person = map['person'] as Person;
+      } else if (map['note'] != null) {
+        _person = map['person'] as Person;
+        _note = map['note'] as Note;
+        _isEdit = true;
+        _titleController.text = _note?.title ?? '';
+        _descriptionController.text = _note?.description ?? '';
+      }
+      _initialized = true;
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
-    Person person = ModalRoute.of(context)!.settings.arguments as Person;
     // TODO: implement build
     return Scaffold(
       appBar: AppBar(
-        title: Text('Adicionar Nota'),
+        title: Text(!_isEdit ? 'Adicionar Nota' : 'Nota'),
         centerTitle: true,
         actions: [
           IconButton(
@@ -38,8 +61,8 @@ class _NoteformpageState extends State<Noteformpage> {
               }
 
               final note = Note(
-                id: Random().nextDouble().toString(),
-                personid: person.id,
+                id: _isEdit ? _note!.id : Random().nextDouble().toString(),
+                personid: _person!.id,
                 title: _titleController.text.trim(),
                 description: _descriptionController.text,
                 mark: _isMark ? 1 : 0,
@@ -47,10 +70,15 @@ class _NoteformpageState extends State<Noteformpage> {
                 marked: _isMark ? 0 : null,
               );
 
-              await Provider.of<Noteservice>(
-                context,
-                listen: false,
-              ).insertNote(note);
+              _isEdit
+                  ? await Provider.of<Noteservice>(
+                      context,
+                      listen: false,
+                    ).updateNote(note)
+                  : await Provider.of<Noteservice>(
+                      context,
+                      listen: false,
+                    ).insertNote(note);
 
               Navigator.of(context).pop();
             },

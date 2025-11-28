@@ -1,6 +1,7 @@
 import 'package:aniversariodois/components/noteGridTile.dart';
 import 'package:aniversariodois/core/models/person.dart';
 import 'package:aniversariodois/core/services/noteService.dart';
+import 'package:aniversariodois/core/utils/routes.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -31,7 +32,13 @@ class Notesmenupage extends StatelessWidget {
                 ),
                 itemCount: notes.data!.length,
                 itemBuilder: (context, index) {
-                  return Notegridtile(note: notes.data![index]);
+                  return GestureDetector(
+                    onTap: () => Navigator.of(context).pushNamed(
+                      Routes.NOTEFORM,
+                      arguments: {'person': person, 'note': notes.data![index]},
+                    ),
+                    child: Notegridtile(note: notes.data![index]),
+                  );
                 },
               ),
             );
