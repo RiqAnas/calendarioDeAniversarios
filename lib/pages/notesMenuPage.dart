@@ -6,14 +6,39 @@ import 'package:aniversariodois/core/utils/routes.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-class Notesmenupage extends StatelessWidget {
+class Notesmenupage extends StatefulWidget {
+  final Person? persona;
+
+  Notesmenupage({this.persona});
+
+  @override
+  State<Notesmenupage> createState() => _NotesmenupageState();
+}
+
+class _NotesmenupageState extends State<Notesmenupage> {
+  Person? person;
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    final obj = ModalRoute.of(context)!.settings.arguments;
+    if (obj == null) {
+      if (widget.persona != null) {
+        person = widget.persona;
+      }
+    } else {
+      person = obj as Person;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-    Person person = ModalRoute.of(context)!.settings.arguments as Person;
     // TODO: implement build
     return Scaffold(
       appBar: AppBar(
-        title: Text("Notas de ${person.nome}"),
+        title: Text(
+          widget.persona != null ? "Suas notas" : "Notas de ${person!.nome}",
+        ),
         centerTitle: true,
         actions: [
           IconButton(
@@ -44,7 +69,7 @@ class Notesmenupage extends StatelessWidget {
                           await Provider.of<Noteservice>(
                             context,
                             listen: false,
-                          ).deleteAllNotes(person.id);
+                          ).deleteAllNotes(person!.id);
                           Navigator.of(context).pop();
                         },
                         child: Text(
@@ -63,7 +88,7 @@ class Notesmenupage extends StatelessWidget {
       ),
       body: Padding(
         padding: const EdgeInsets.all(15.0),
-        child: Notesgrid(person: person),
+        child: Notesgrid(person: person!),
       ),
       floatingActionButton: ElevatedButton.icon(
         style: ElevatedButton.styleFrom(

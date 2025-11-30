@@ -26,7 +26,7 @@ class Personservice extends ChangeNotifier {
           await Databaseutil.update('persons', pes.toJson(), pes.id);
         }
       });
-      return _persons;
+      return _persons.where((person) => person.id != 'home').toList();
     } catch (error) {
       throw 'Erro inesperado ao carregar pessoas';
     }

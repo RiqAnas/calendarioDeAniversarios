@@ -17,6 +17,10 @@ class Databaseutil {
         await db.execute(
           'CREATE TABLE notes (id TEXT PRIMARY KEY, personId TEXT NOT NULL, title TEXT NOT NULL, description TEXT NOT NULL, mark INTEGER NOT NULL, createdAt TEXT NOT NULL, marked INTEGER, date TEXT, FOREIGN KEY (personId) REFERENCES persons (id))',
         );
+
+        await db.rawInsert(
+          'INSERT INTO persons VALUES ("home", "notas", "${DateTime.now().toIso8601String()}", 0, 1)',
+        );
       },
       version: 3,
     );
