@@ -1,10 +1,8 @@
 import 'package:aniversariodois/components/notesGrid.dart';
 import 'package:aniversariodois/core/models/person.dart';
-import 'package:aniversariodois/core/services/noteService.dart';
 import 'package:aniversariodois/core/utils/routes.dart';
 
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 
 class Notesmenupage extends StatefulWidget {
   final Person? persona;
@@ -35,57 +33,9 @@ class _NotesmenupageState extends State<Notesmenupage> {
   Widget build(BuildContext context) {
     // TODO: implement build
     return Scaffold(
-      appBar: AppBar(
-        title: Text(
-          widget.persona != null ? "Suas notas" : "Notas de ${person!.nome}",
-        ),
-        centerTitle: true,
-        actions: [
-          IconButton(
-            onPressed: () {
-              showDialog(
-                context: context,
-                builder: (context) {
-                  return AlertDialog(
-                    title: const Text(
-                      "Deseja realmente deletar as notas dessa pessoa?",
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 20,
-                      ),
-                    ),
-                    content: const Text(
-                      'Todas as notas referente a essa pessoa serão excluídas permanentemente',
-                    ),
-                    actions: [
-                      TextButton(
-                        onPressed: () {
-                          Navigator.of(context).pop();
-                        },
-                        child: Text("Cancelar"),
-                      ),
-                      TextButton(
-                        onPressed: () async {
-                          await Provider.of<Noteservice>(
-                            context,
-                            listen: false,
-                          ).deleteAllNotes(person!.id);
-                          Navigator.of(context).pop();
-                        },
-                        child: Text(
-                          "Excluir",
-                          style: TextStyle(color: Colors.red),
-                        ),
-                      ),
-                    ],
-                  );
-                },
-              );
-            },
-            icon: Icon(Icons.delete, color: Colors.red),
-          ),
-        ],
-      ),
+      appBar: widget.persona == null
+          ? AppBar(title: Text("Notas de ${person!.nome}"), centerTitle: true)
+          : null,
       body: Padding(
         padding: const EdgeInsets.all(15.0),
         child: Notesgrid(person: person!),

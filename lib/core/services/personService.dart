@@ -66,6 +66,7 @@ class Personservice extends ChangeNotifier {
         id: person.id,
         nome: person.nome,
         nascimento: person.nascimento,
+        telefone: person.telefone,
         idade: person.idade,
         ativa: 0,
       );

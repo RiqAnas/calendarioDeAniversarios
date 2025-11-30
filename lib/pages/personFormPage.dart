@@ -14,6 +14,7 @@ class Personformpage extends StatefulWidget {
 
 class _PersonformpageState extends State<Personformpage> {
   final TextEditingController _controller = TextEditingController();
+  final TextEditingController _telcontroller = TextEditingController();
 
   DateTime? _nascimento;
   bool _initialized = false;
@@ -46,6 +47,7 @@ class _PersonformpageState extends State<Personformpage> {
         _edit = true;
         _nascimento = _pessoa?.nascimento ?? DateTime.now();
         _controller.text = _pessoa?.nome ?? '';
+        _telcontroller.text = _pessoa?.telefone ?? '';
       }
 
       _initialized = true;
@@ -70,6 +72,7 @@ class _PersonformpageState extends State<Personformpage> {
                 id: _edit ? _pessoa!.id : Random().nextDouble().toString(),
                 nome: _controller.text,
                 nascimento: _nascimento,
+                telefone: " 55${_telcontroller.text}",
                 idade: Calc.ageCalc(_nascimento!),
                 ativa: 1,
               );
@@ -101,6 +104,35 @@ class _PersonformpageState extends State<Personformpage> {
                   label: Text("Nome"),
                   border: OutlineInputBorder(),
                 ),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 20),
+              child: Row(
+                children: [
+                  Container(
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(10),
+                      border: BoxBorder.all(color: Colors.black, width: 2),
+                      color: Colors.grey,
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: const Text("+55"),
+                    ),
+                  ),
+                  const SizedBox(width: 10),
+                  Expanded(
+                    child: TextField(
+                      controller: _telcontroller,
+                      decoration: InputDecoration(
+                        label: Text("Telefone"),
+                        border: OutlineInputBorder(),
+                      ),
+                      keyboardType: TextInputType.phone,
+                    ),
+                  ),
+                ],
               ),
             ),
             GestureDetector(

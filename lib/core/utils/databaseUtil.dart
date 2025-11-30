@@ -11,7 +11,7 @@ class Databaseutil {
       path.join(dbpath, 'birthday.db'),
       onCreate: (db, version) async {
         await db.execute(
-          'CREATE TABLE persons (id TEXT PRIMARY KEY, nome TEXT NOT NULL, nascimento TEXT NOT NULL, idade INTEGER, ativa INTEGER NOT NULL)',
+          'CREATE TABLE persons (id TEXT PRIMARY KEY, nome TEXT NOT NULL, telefone TEXT NOT NULL, nascimento TEXT NOT NULL, idade INTEGER, ativa INTEGER NOT NULL)',
         );
 
         await db.execute(
@@ -19,10 +19,10 @@ class Databaseutil {
         );
 
         await db.rawInsert(
-          'INSERT INTO persons VALUES ("home", "notas", "${DateTime.now().toIso8601String()}", 0, 1)',
+          'INSERT INTO persons VALUES ("home", "notas", "semnumero", "${DateTime.now().toIso8601String()}", 0, 1)',
         );
       },
-      version: 3,
+      version: 4,
     );
   }
 

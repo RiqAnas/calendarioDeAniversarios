@@ -19,6 +19,10 @@ class _TabspageState extends State<Tabspage> {
   Widget build(BuildContext context) {
     // TODO: implement build
     return Scaffold(
+      appBar: AppBar(
+        title: Text(_pages[_selectedIndex]['title'] as String),
+        centerTitle: true,
+      ),
       bottomNavigationBar: NavigationBar(
         onDestinationSelected: (index) {
           setState(() {

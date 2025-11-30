@@ -1,6 +1,7 @@
 import 'package:aniversariodois/components/noteListTile.dart';
 import 'package:aniversariodois/core/models/person.dart';
 import 'package:aniversariodois/core/services/noteService.dart';
+import 'package:aniversariodois/core/utils/redirect.dart';
 import 'package:aniversariodois/core/utils/routes.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -53,7 +54,23 @@ class _PersondialogState extends State<Persondialog> {
                 ),
                 const SizedBox(height: 15),
                 Text('Idade: ${widget.person.idade} anos'),
-                const SizedBox(height: 30),
+                const SizedBox(height: 5),
+                Row(
+                  children: [
+                    const Text('Telefone: '),
+                    TextButton(
+                      onPressed: () =>
+                          Redirect.phoneCall(widget.person.telefone),
+                      child: Text("+${widget.person.telefone}"),
+                    ),
+                    IconButton(
+                      onPressed: () =>
+                          Redirect.whatsapp(widget.person.telefone),
+                      icon: Icon(Icons.chat, size: 20),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 20),
                 Row(
                   children: [
                     const Text(

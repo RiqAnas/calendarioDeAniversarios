@@ -8,17 +8,6 @@ class Homepage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text("Aniversários"),
-        centerTitle: true,
-        actions: [
-          IconButton(
-            onPressed: () =>
-                Navigator.of(context).restorablePushNamed(Routes.FORM),
-            icon: Icon(Icons.add),
-          ),
-        ],
-      ),
       body: FutureBuilder(
         future: Provider.of<Personservice>(context).loadPersons(),
         builder: (context, person) {
@@ -36,6 +25,16 @@ class Homepage extends StatelessWidget {
             );
           }
         },
+      ),
+      floatingActionButton: ElevatedButton.icon(
+        style: ElevatedButton.styleFrom(
+          shape: CircleBorder(),
+          minimumSize: Size(50, 50),
+          backgroundColor: const Color.fromARGB(255, 248, 162, 191),
+          foregroundColor: Colors.black,
+        ),
+        onPressed: () => Navigator.of(context).restorablePushNamed(Routes.FORM),
+        label: Icon(Icons.add_outlined),
       ),
     );
   }
