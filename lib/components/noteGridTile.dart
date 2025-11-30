@@ -9,32 +9,39 @@ class Notegridtile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
-    return Card(
-      child: Padding(
-        padding: const EdgeInsets.all(15.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: [
-            Text(
-              note.title,
-              overflow: TextOverflow.ellipsis,
-              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        SizedBox(
+          width: double.maxFinite,
+          child: Card(
+            child: Padding(
+              padding: const EdgeInsets.all(15.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Text(
+                    note.description,
+                    overflow: TextOverflow.ellipsis,
+                    maxLines: 5,
+                    style: TextStyle(fontSize: 12),
+                  ),
+                ],
+              ),
             ),
-            Text(
-              DateFormat('dd/MM/yyyy hh:mm').format(note.createdAt),
-              style: TextStyle(fontSize: 10, color: Colors.grey),
-            ),
-            const SizedBox(height: 10),
-            Text(
-              note.description,
-              overflow: TextOverflow.ellipsis,
-              maxLines: 5,
-              style: TextStyle(fontSize: 12),
-            ),
-          ],
+          ),
         ),
-      ),
+        Text(
+          note.title,
+          overflow: TextOverflow.ellipsis,
+          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
+        ),
+        Text(
+          DateFormat('dd/MM/yyyy hh:mm').format(note.createdAt),
+          style: TextStyle(fontSize: 10, color: Colors.grey),
+        ),
+      ],
     );
   }
 }

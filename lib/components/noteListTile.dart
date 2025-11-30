@@ -20,9 +20,11 @@ class Notelisttile extends StatelessWidget {
               children: [
                 Text(note.title, style: TextStyle(fontWeight: FontWeight.bold)),
                 SizedBox(
+                  width: MediaQuery.widthOf(context) * 0.7,
                   child: Text(
                     note.description,
                     overflow: TextOverflow.ellipsis,
+                    maxLines: 1,
                     style: TextStyle(color: Colors.grey),
                   ),
                 ),

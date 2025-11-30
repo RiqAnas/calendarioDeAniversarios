@@ -36,9 +36,9 @@ class _NotesgridState extends State<Notesgrid> {
           return const Center(child: Text("Sem notas"));
         } else {
           return GridView.builder(
-            gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
-              maxCrossAxisExtent: MediaQuery.widthOf(context) * 0.5,
-              mainAxisExtent: MediaQuery.heightOf(context) * 0.22,
+            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: 2,
+              mainAxisExtent: MediaQuery.heightOf(context) * 0.25,
               childAspectRatio: 3 / 2,
               mainAxisSpacing: 8,
               crossAxisSpacing: 10,

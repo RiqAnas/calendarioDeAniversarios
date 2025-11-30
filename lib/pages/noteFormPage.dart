@@ -72,7 +72,7 @@ class _NoteformpageState extends State<Noteformpage> {
                 description: _descriptionController.text,
                 mark: _isMark ? 1 : 0,
                 date: _isMark ? _markedAt : null,
-                createdAt: _isEdit ? _note!.createdAt : DateTime.now(),
+                createdAt: DateTime.now(),
                 marked: _isMark ? 0 : null,
               );
 

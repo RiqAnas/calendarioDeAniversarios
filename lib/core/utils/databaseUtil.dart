@@ -34,7 +34,12 @@ class Databaseutil {
   ) async {
     final db = await Databaseutil.database();
 
-    return db.query(table, where: 'personId = ?', whereArgs: [personId]);
+    return db.query(
+      table,
+      where: 'personId = ?',
+      whereArgs: [personId],
+      orderBy: 'createdAt',
+    );
   }
 
   static Future<List<Map<String, dynamic>>> loadSingle(

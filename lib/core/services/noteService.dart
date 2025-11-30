@@ -16,7 +16,7 @@ class Noteservice extends ChangeNotifier {
       final list = await Databaseutil.loadPerPerson('notes', personId);
       final List<Note> notes = list.map((note) => Note.fromJson(note)).toList();
 
-      _notes.add(notes);
+      _notes.add(notes.reversed.toList());
     } catch (error) {
       throw 'Erro ao carregar notas da pessoa';
     } finally {
