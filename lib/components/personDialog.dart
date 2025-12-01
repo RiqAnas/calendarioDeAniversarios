@@ -1,6 +1,8 @@
+//import 'package:aniversariodois/components/dropDownColor.dart';
 import 'package:aniversariodois/components/noteListTile.dart';
 import 'package:aniversariodois/core/models/person.dart';
 import 'package:aniversariodois/core/services/noteService.dart';
+//import 'package:aniversariodois/core/utils/colorsMap.dart';
 import 'package:aniversariodois/core/utils/redirect.dart';
 import 'package:aniversariodois/core/utils/routes.dart';
 import 'package:flutter/material.dart';
@@ -17,6 +19,8 @@ class Persondialog extends StatefulWidget {
 }
 
 class _PersondialogState extends State<Persondialog> {
+  //String? coloracao;
+
   @override
   void initState() {
     super.initState();
@@ -25,6 +29,12 @@ class _PersondialogState extends State<Persondialog> {
       listen: false,
     ).loadNotesperPerson(widget.person.id);
   }
+
+  /*void selectedColor(String cor) {
+    setState(() {
+      coloracao = cor;
+    });
+  }*/
 
   @override
   Widget build(BuildContext context) {
@@ -133,6 +143,15 @@ class _PersondialogState extends State<Persondialog> {
                     ),
                   ],
                 ),
+                /*Dropdowncolor(selectedColor),
+                const SizedBox(height: 10),
+                Container(
+                  decoration: BoxDecoration(
+                    border: BoxBorder.all(color: Colors.black),
+                    color: Colorsmap.getColor(coloracao ?? ''),
+                  ),
+                  constraints: BoxConstraints(minHeight: 20),
+                ),*/
               ],
             ),
           ),

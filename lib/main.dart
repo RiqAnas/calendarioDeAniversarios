@@ -17,6 +17,7 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    Color color = Colors.red;
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (_) => Personservice()),
@@ -26,7 +27,14 @@ class MyApp extends StatelessWidget {
         title: 'Aniversarios',
         debugShowCheckedModeBanner: false,
         theme: ThemeData(
-          colorScheme: ColorScheme.fromSeed(seedColor: Colors.pinkAccent),
+          colorScheme: ColorScheme.fromSeed(
+            seedColor: color,
+            primary: color,
+            surface: null,
+            surfaceContainer: null,
+            surfaceContainerLow: null,
+            onSurface: null,
+          ),
         ),
         initialRoute: Routes.HOME,
         routes: {

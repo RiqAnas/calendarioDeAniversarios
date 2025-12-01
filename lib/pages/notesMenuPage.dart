@@ -44,8 +44,8 @@ class _NotesmenupageState extends State<Notesmenupage> {
         style: ElevatedButton.styleFrom(
           shape: CircleBorder(),
           minimumSize: Size(50, 50),
-          backgroundColor: const Color.fromARGB(255, 248, 162, 191),
-          foregroundColor: Colors.black,
+          backgroundColor: Theme.of(context).primaryColor,
+          foregroundColor: Theme.of(context).colorScheme.surface,
         ),
         onPressed: () => Navigator.of(context).pushNamed(
           Routes.NOTEFORM,
