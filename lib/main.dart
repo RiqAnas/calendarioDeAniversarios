@@ -1,6 +1,8 @@
+import 'package:aniversariodois/core/services/folderService.dart';
 import 'package:aniversariodois/core/services/noteService.dart';
 import 'package:aniversariodois/core/services/personService.dart';
 import 'package:aniversariodois/core/utils/routes.dart';
+import 'package:aniversariodois/pages/folderFormPage.dart';
 import 'package:aniversariodois/pages/noteFormPage.dart';
 import 'package:aniversariodois/pages/notesMenuPage.dart';
 import 'package:aniversariodois/pages/personFormPage.dart';
@@ -17,11 +19,12 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Color color = Colors.red;
+    Color color = const Color.fromARGB(255, 248, 162, 191);
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (_) => Personservice()),
         ChangeNotifierProvider(create: (_) => Noteservice()),
+        ChangeNotifierProvider(create: (_) => Folderservice()),
       ],
       child: MaterialApp(
         title: 'Aniversarios',
@@ -42,6 +45,7 @@ class MyApp extends StatelessWidget {
           Routes.FORM: (_) => Personformpage(),
           Routes.NOTEFORM: (_) => Noteformpage(),
           Routes.NOTEMENU: (_) => Notesmenupage(),
+          Routes.FOLDERFORM: (_) => Folderformpage(),
         },
       ),
     );

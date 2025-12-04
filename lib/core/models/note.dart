@@ -1,6 +1,7 @@
 class Note {
   String id;
   String personid;
+  String? folderid;
   String title;
   String description;
   int mark;
@@ -11,6 +12,7 @@ class Note {
   Note({
     required this.id,
     required this.personid,
+    this.folderid,
     required this.title,
     required this.description,
     required this.mark,
@@ -23,6 +25,7 @@ class Note {
     return {
       'id': id,
       'personId': personid,
+      'folderId': folderid,
       'title': title,
       'description': description,
       'mark': mark,
@@ -36,6 +39,7 @@ class Note {
     return Note(
       id: data['id'],
       personid: data['personId'],
+      folderid: data['folderId'],
       title: data['title'],
       description: data['description'],
       mark: data['mark'],

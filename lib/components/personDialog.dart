@@ -92,9 +92,10 @@ class _PersondialogState extends State<Persondialog> {
                     ),
                     const Spacer(),
                     TextButton(
-                      onPressed: () => Navigator.of(
-                        context,
-                      ).pushNamed(Routes.NOTEMENU, arguments: widget.person),
+                      onPressed: () => Navigator.of(context).pushNamed(
+                        Routes.NOTEMENU,
+                        arguments: {'person': widget.person, 'folder': null},
+                      ),
                       child: Text("Ver todas"),
                     ),
                   ],

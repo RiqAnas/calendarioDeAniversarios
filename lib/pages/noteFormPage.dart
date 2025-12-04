@@ -68,6 +68,7 @@ class _NoteformpageState extends State<Noteformpage> {
               final note = Note(
                 id: _isEdit ? _note!.id : Random().nextDouble().toString(),
                 personid: _person!.id,
+                folderid: _isEdit ? _note!.folderid : null,
                 title: _titleController.text.trim(),
                 description: _descriptionController.text,
                 mark: _isMark ? 1 : 0,

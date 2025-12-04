@@ -1,4 +1,6 @@
+import 'package:aniversariodois/components/foldersList.dart';
 import 'package:aniversariodois/components/notesGrid.dart';
+import 'package:aniversariodois/core/models/folder.dart';
 import 'package:aniversariodois/core/models/person.dart';
 import 'package:aniversariodois/core/utils/routes.dart';
 
@@ -15,6 +17,7 @@ class Notesmenupage extends StatefulWidget {
 
 class _NotesmenupageState extends State<Notesmenupage> {
   Person? person;
+  Folder? folder;
 
   @override
   void didChangeDependencies() {
@@ -25,7 +28,13 @@ class _NotesmenupageState extends State<Notesmenupage> {
         person = widget.persona;
       }
     } else {
-      person = obj as Person;
+      final map = obj as Map<String, dynamic>;
+      if (map['folder'] == null) {
+        person = map['person'] as Person;
+      } else {
+        person = map['person'] as Person;
+        folder = map['folder'] as Folder;
+      }
     }
   }
 
@@ -38,7 +47,12 @@ class _NotesmenupageState extends State<Notesmenupage> {
           : null,
       body: Padding(
         padding: const EdgeInsets.all(15.0),
-        child: Notesgrid(person: person!),
+        child: Column(
+          children: [
+            Folderslist(person: person!, folders: folder),
+            Notesgrid(person: person!, folder: folder),
+          ],
+        ),
       ),
       floatingActionButton: ElevatedButton.icon(
         style: ElevatedButton.styleFrom(

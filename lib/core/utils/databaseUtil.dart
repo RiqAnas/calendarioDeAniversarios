@@ -15,14 +15,18 @@ class Databaseutil {
         );
 
         await db.execute(
-          'CREATE TABLE notes (id TEXT PRIMARY KEY, personId TEXT NOT NULL, title TEXT NOT NULL, description TEXT NOT NULL, mark INTEGER NOT NULL, createdAt TEXT NOT NULL, marked INTEGER, date TEXT, FOREIGN KEY (personId) REFERENCES persons (id))',
+          'CREATE TABLE notes (id TEXT PRIMARY KEY, personId TEXT NOT NULL, folderId TEXT, title TEXT NOT NULL, description TEXT NOT NULL, mark INTEGER NOT NULL, createdAt TEXT NOT NULL, marked INTEGER, date TEXT, FOREIGN KEY (personId) REFERENCES persons (id))',
+        );
+
+        await db.execute(
+          'CREATE TABLE folders (id TEXT PRIMARY KEY, personId TEXT NOT NULL, folderId TEXT, name TEXT NOT NULL, color TEXT NOT NULL, createdAt TEXT NOT NULL)',
         );
 
         await db.rawInsert(
           'INSERT INTO persons VALUES ("home", "notas", "semnumero", "${DateTime.now().toIso8601String()}", 0, 1)',
         );
       },
-      version: 4,
+      version: 5,
     );
   }
 
