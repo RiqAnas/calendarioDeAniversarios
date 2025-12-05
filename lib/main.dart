@@ -19,7 +19,7 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Color color = const Color.fromARGB(255, 248, 162, 191);
+    Color color = Colors.blue;
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (_) => Personservice()),

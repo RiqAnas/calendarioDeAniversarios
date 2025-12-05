@@ -46,9 +46,30 @@ class _NotesmenupageState extends State<Notesmenupage> {
           ? AppBar(title: Text("Notas de ${person!.nome}"), centerTitle: true)
           : null,
       body: Padding(
-        padding: const EdgeInsets.all(15.0),
+        padding: const EdgeInsets.symmetric(horizontal: 15.0),
         child: Column(
           children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                IconButton(
+                  onPressed: () {
+                    if (folder == null) {
+                      Navigator.of(context).pushNamed(
+                        Routes.FOLDERFORM,
+                        arguments: {'person': person, 'folder': null},
+                      );
+                    } else {
+                      Navigator.of(context).pushNamed(
+                        Routes.FOLDERFORM,
+                        arguments: {'person': person, 'folder': folder},
+                      );
+                    }
+                  },
+                  icon: Icon(Icons.add, fontWeight: FontWeight.bold),
+                ),
+              ],
+            ),
             Folderslist(person: person!, folders: folder),
             Notesgrid(person: person!, folder: folder),
           ],
