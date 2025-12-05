@@ -19,7 +19,32 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Color color = Colors.blue;
+    Color color = Colors.blueAccent;
+
+    ThemeData _switchTheme(bool theme) {
+      if (theme == true) {
+        return ThemeData(
+          colorScheme: ColorScheme.fromSeed(
+            seedColor: color,
+            primary: color,
+            surface: null,
+            surfaceContainer: null,
+            surfaceContainerLow: null,
+            onSurface: null,
+          ),
+        );
+      } else {
+        return ThemeData(
+          colorScheme: ColorScheme.dark(
+            primary: color,
+            surface: const Color.fromARGB(255, 29, 28, 28),
+            surfaceContainer: Colors.black,
+            surfaceContainerLow: Colors.black,
+          ),
+        );
+      }
+    }
+
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (_) => Personservice()),
@@ -29,16 +54,7 @@ class MyApp extends StatelessWidget {
       child: MaterialApp(
         title: 'Aniversarios',
         debugShowCheckedModeBanner: false,
-        theme: ThemeData(
-          colorScheme: ColorScheme.fromSeed(
-            seedColor: color,
-            primary: color,
-            surface: null,
-            surfaceContainer: null,
-            surfaceContainerLow: null,
-            onSurface: null,
-          ),
-        ),
+        theme: _switchTheme(true),
         initialRoute: Routes.HOME,
         routes: {
           Routes.HOME: (_) => Tabspage(),

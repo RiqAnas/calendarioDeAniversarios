@@ -3,6 +3,7 @@ import 'dart:math';
 import 'package:aniversariodois/components/dropDownColor.dart';
 import 'package:aniversariodois/core/models/folder.dart';
 import 'package:aniversariodois/core/models/person.dart';
+import 'package:aniversariodois/core/models/transitionArg.dart';
 import 'package:aniversariodois/core/services/folderService.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -23,14 +24,13 @@ class _FolderformpageState extends State<Folderformpage> {
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    final map =
-        ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>;
+    final arg = ModalRoute.of(context)!.settings.arguments as Transitionarg;
 
-    if (map['folder'] == null) {
-      person = map['person'] as Person;
+    if (arg.folder == null) {
+      person = arg.person;
     } else {
-      person = map['person'] as Person;
-      folder = map['folder'] as Folder;
+      person = arg.person;
+      folder = arg.folder;
     }
   }
 

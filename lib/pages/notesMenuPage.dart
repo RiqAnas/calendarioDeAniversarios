@@ -2,6 +2,8 @@ import 'package:aniversariodois/components/foldersList.dart';
 import 'package:aniversariodois/components/notesGrid.dart';
 import 'package:aniversariodois/core/models/folder.dart';
 import 'package:aniversariodois/core/models/person.dart';
+import 'package:aniversariodois/core/models/transitionArg.dart';
+import 'package:aniversariodois/core/utils/colorsMap.dart';
 import 'package:aniversariodois/core/utils/routes.dart';
 
 import 'package:flutter/material.dart';
@@ -28,12 +30,12 @@ class _NotesmenupageState extends State<Notesmenupage> {
         person = widget.persona;
       }
     } else {
-      final map = obj as Map<String, dynamic>;
-      if (map['folder'] == null) {
-        person = map['person'] as Person;
+      final arg = obj as Transitionarg;
+      if (arg.folder == null) {
+        person = arg.person;
       } else {
-        person = map['person'] as Person;
-        folder = map['folder'] as Folder;
+        person = arg.person;
+        folder = arg.folder;
       }
     }
   }
@@ -43,7 +45,20 @@ class _NotesmenupageState extends State<Notesmenupage> {
     // TODO: implement build
     return Scaffold(
       appBar: widget.persona == null
-          ? AppBar(title: Text("Notas de ${person!.nome}"), centerTitle: true)
+          ? AppBar(
+              title: folder == null
+                  ? Text("Notas de ${person!.nome}")
+                  : Text("Notas em ${folder!.name}"),
+              centerTitle: true,
+              shape: folder == null
+                  ? null
+                  : BorderDirectional(
+                      bottom: BorderSide(
+                        width: 4,
+                        color: Colorsmap.getColor(folder!.color),
+                      ),
+                    ),
+            )
           : null,
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 15.0),
@@ -57,12 +72,15 @@ class _NotesmenupageState extends State<Notesmenupage> {
                     if (folder == null) {
                       Navigator.of(context).pushNamed(
                         Routes.FOLDERFORM,
-                        arguments: {'person': person, 'folder': null},
+                        arguments: Transitionarg(person: person!),
                       );
                     } else {
                       Navigator.of(context).pushNamed(
                         Routes.FOLDERFORM,
-                        arguments: {'person': person, 'folder': folder},
+                        arguments: Transitionarg(
+                          person: person!,
+                          folder: folder,
+                        ),
                       );
                     }
                   },
@@ -79,13 +97,22 @@ class _NotesmenupageState extends State<Notesmenupage> {
         style: ElevatedButton.styleFrom(
           shape: CircleBorder(),
           minimumSize: Size(50, 50),
-          backgroundColor: Theme.of(context).primaryColor,
+          backgroundColor: Theme.of(context).colorScheme.primary,
           foregroundColor: Theme.of(context).colorScheme.surface,
         ),
-        onPressed: () => Navigator.of(context).pushNamed(
-          Routes.NOTEFORM,
-          arguments: {'person': person, 'note': null},
-        ),
+        onPressed: () {
+          if (folder == null) {
+            Navigator.of(context).pushNamed(
+              Routes.NOTEFORM,
+              arguments: Transitionarg(person: person!),
+            );
+          } else {
+            Navigator.of(context).pushNamed(
+              Routes.NOTEFORM,
+              arguments: Transitionarg(person: person!, folder: folder),
+            );
+          }
+        },
         label: Icon(Icons.add_outlined),
       ),
     );

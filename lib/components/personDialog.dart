@@ -1,6 +1,7 @@
 //import 'package:aniversariodois/components/dropDownColor.dart';
 import 'package:aniversariodois/components/noteListTile.dart';
 import 'package:aniversariodois/core/models/person.dart';
+import 'package:aniversariodois/core/models/transitionArg.dart';
 import 'package:aniversariodois/core/services/noteService.dart';
 //import 'package:aniversariodois/core/utils/colorsMap.dart';
 import 'package:aniversariodois/core/utils/redirect.dart';
@@ -44,7 +45,10 @@ class _PersondialogState extends State<Persondialog> {
         decoration: BoxDecoration(
           color: Theme.of(context).cardColor,
           borderRadius: BorderRadius.circular(15),
-          border: Border.all(color: Theme.of(context).primaryColor, width: 3),
+          border: Border.all(
+            color: Theme.of(context).colorScheme.primary,
+            width: 3,
+          ),
         ),
         height: MediaQuery.heightOf(context) * 0.6,
         width: MediaQuery.widthOf(context) * 0.9,
@@ -94,7 +98,7 @@ class _PersondialogState extends State<Persondialog> {
                     TextButton(
                       onPressed: () => Navigator.of(context).pushNamed(
                         Routes.NOTEMENU,
-                        arguments: {'person': widget.person, 'folder': null},
+                        arguments: Transitionarg(person: widget.person),
                       ),
                       child: Text("Ver todas"),
                     ),
@@ -118,10 +122,10 @@ class _PersondialogState extends State<Persondialog> {
                             return GestureDetector(
                               onTap: () => Navigator.of(context).pushNamed(
                                 Routes.NOTEFORM,
-                                arguments: {
-                                  'person': widget.person,
-                                  'note': note.data![index],
-                                },
+                                arguments: Transitionarg(
+                                  person: widget.person,
+                                  note: note.data![index],
+                                ),
                               ),
                               child: Notelisttile(note: note.data![index]),
                             );
@@ -137,7 +141,7 @@ class _PersondialogState extends State<Persondialog> {
                       child: IconButton(
                         onPressed: () => Navigator.of(context).pushNamed(
                           Routes.NOTEFORM,
-                          arguments: {'person': widget.person, 'note': null},
+                          arguments: Transitionarg(person: widget.person),
                         ),
                         icon: Icon(Icons.add_outlined),
                       ),

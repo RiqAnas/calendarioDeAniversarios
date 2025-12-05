@@ -1,5 +1,6 @@
 import 'package:aniversariodois/core/models/folder.dart';
 import 'package:aniversariodois/core/models/person.dart';
+import 'package:aniversariodois/core/models/transitionArg.dart';
 import 'package:aniversariodois/core/utils/colorsMap.dart';
 import 'package:aniversariodois/core/utils/routes.dart';
 import 'package:flutter/material.dart';
@@ -17,14 +18,13 @@ class Folderslisttile extends StatelessWidget {
       onTap: () {
         Navigator.of(context).pushNamed(
           Routes.NOTEMENU,
-          arguments: {'person': person, 'folder': folder},
+          arguments: Transitionarg(person: person, folder: folder),
         );
       },
       child: Padding(
         padding: const EdgeInsets.only(top: 10.0, right: 3),
         child: SizedBox(
           width: 80,
-          height: 80,
           child: LayoutBuilder(
             builder: (context, constraints) {
               final double maxWidth = constraints.maxWidth;

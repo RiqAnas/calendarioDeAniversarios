@@ -30,7 +30,7 @@ class Homepage extends StatelessWidget {
         style: ElevatedButton.styleFrom(
           shape: CircleBorder(),
           minimumSize: Size(50, 50),
-          backgroundColor: Theme.of(context).primaryColor,
+          backgroundColor: Theme.of(context).colorScheme.primary,
           foregroundColor: Theme.of(context).colorScheme.surface,
         ),
         onPressed: () => Navigator.of(context).restorablePushNamed(Routes.FORM),

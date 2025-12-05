@@ -24,6 +24,7 @@ class _TabspageState extends State<Tabspage> {
         centerTitle: true,
       ),
       bottomNavigationBar: NavigationBar(
+        indicatorColor: Theme.of(context).colorScheme.primary,
         onDestinationSelected: (index) {
           setState(() {
             _selectedIndex = index;

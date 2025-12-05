@@ -1,7 +1,9 @@
 import 'dart:math';
 
+import 'package:aniversariodois/core/models/folder.dart';
 import 'package:aniversariodois/core/models/note.dart';
 import 'package:aniversariodois/core/models/person.dart';
+import 'package:aniversariodois/core/models/transitionArg.dart';
 import 'package:aniversariodois/core/services/noteService.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -21,6 +23,7 @@ class _NoteformpageState extends State<Noteformpage> {
 
   Person? _person;
   Note? _note;
+  Folder? _folder;
 
   bool _isMark = false;
   bool _initialized = false;
@@ -30,16 +33,29 @@ class _NoteformpageState extends State<Noteformpage> {
   void didChangeDependencies() {
     super.didChangeDependencies();
     if (!_initialized) {
-      final map =
-          ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>;
-      if (map['note'] == null) {
-        _person = map['person'] as Person;
-      } else if (map['note'] != null) {
-        _person = map['person'] as Person;
-        _note = map['note'] as Note;
-        _isEdit = true;
-        _titleController.text = _note?.title ?? '';
-        _descriptionController.text = _note?.description ?? '';
+      final arg = ModalRoute.of(context)!.settings.arguments as Transitionarg;
+      if (arg.folder == null) {
+        if (arg.note == null) {
+          _person = arg.person;
+        } else if (arg.note != null) {
+          _person = arg.person;
+          _note = arg.note;
+          _isEdit = true;
+          _titleController.text = _note?.title ?? '';
+          _descriptionController.text = _note?.description ?? '';
+        }
+      } else {
+        if (arg.note == null) {
+          _person = arg.person;
+          _folder = arg.folder;
+        } else if (arg.note != null) {
+          _person = arg.person;
+          _note = arg.note;
+          _folder = arg.folder;
+          _isEdit = true;
+          _titleController.text = _note?.title ?? '';
+          _descriptionController.text = _note?.description ?? '';
+        }
       }
       _initialized = true;
     }
@@ -68,7 +84,7 @@ class _NoteformpageState extends State<Noteformpage> {
               final note = Note(
                 id: _isEdit ? _note!.id : Random().nextDouble().toString(),
                 personid: _person!.id,
-                folderid: _isEdit ? _note!.folderid : null,
+                folderid: _isEdit ? _note!.folderid : _folder?.id,
                 title: _titleController.text.trim(),
                 description: _descriptionController.text,
                 mark: _isMark ? 1 : 0,

@@ -33,35 +33,38 @@ class _FolderslistState extends State<Folderslist> {
       builder: (context, folders) {
         if (folders.connectionState == ConnectionState.waiting) {
           return const Center(child: CircularProgressIndicator());
-        } else if (!folders.hasData || folders.data!.isEmpty) {
-          return Row(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [],
-          );
-        } else {
-          List<Folder> folder = folders.data!
-              .where((folder) => folder.folderId == widget.folders?.id)
-              .toList();
-          return Padding(
-            padding: const EdgeInsets.symmetric(vertical: 15.0),
-            child: SizedBox(
-              width: MediaQuery.of(context).size.width * 0.9,
-              height: 80,
-              child: Row(
-                children: [
-                  Expanded(
-                    child: ListView(
-                      scrollDirection: Axis.horizontal,
-                      children: folder
-                          .map((fol) => Folderslisttile(fol, widget.person))
-                          .toList(),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          );
         }
+        if (!folders.hasData || folders.data!.isEmpty) {
+          return SizedBox.shrink();
+        }
+
+        List<Folder> folder = folders.data!
+            .where((folder) => folder.folderId == widget.folders?.id)
+            .toList();
+
+        if (folder.isEmpty) {
+          return SizedBox.shrink();
+        }
+
+        return Padding(
+          padding: const EdgeInsets.symmetric(vertical: 15.0),
+          child: SizedBox(
+            width: MediaQuery.of(context).size.width * 0.9,
+            height: 80,
+            child: Row(
+              children: [
+                Expanded(
+                  child: ListView(
+                    scrollDirection: Axis.horizontal,
+                    children: folder
+                        .map((fol) => Folderslisttile(fol, widget.person))
+                        .toList(),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        );
       },
     );
   }

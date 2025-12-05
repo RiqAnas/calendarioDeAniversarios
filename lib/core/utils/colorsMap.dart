@@ -2,37 +2,34 @@ import 'package:flutter/material.dart';
 
 class Colorsmap {
   static final Map<String, Color> colorMap = {
-    'vermelho': Colors.red,
-    'rosa': Colors.pink,
-    'roxo': Colors.purple,
-    'roxoescuro': Colors.deepPurple,
-    'indigo': Colors.indigo,
-    'azul': Colors.blue,
-    'azulclaro': Colors.lightBlue,
-    'ciano': Colors.cyan,
-    'verdeagua': Colors.teal,
-    'verde': Colors.green,
-    'verdeclaro': Colors.lightGreen,
-    'limao': Colors.lime,
-    'amarelo': Colors.yellow,
-    'ambar': Colors.amber,
-    'laranja': Colors.orange,
-    'laranjaescuro': Colors.deepOrange,
-    'marrom': Colors.brown,
+    'Vermelho': Colors.red,
+    'Rosa': Colors.pink,
+    'Rosa Claro': const Color.fromARGB(255, 248, 162, 191),
+    'Roxo': Colors.purple,
+    'Roxo Escuro': Colors.deepPurple,
+    'Indigo': Colors.indigo,
+    'Azul': Colors.blue,
+    'Azul Claro': Colors.lightBlue,
+    'Ciano': Colors.cyan,
+    'Verde Água': Colors.teal,
+    'Verde': Colors.green,
+    'Verde Claro': Colors.lightGreen,
+    'Limão': Colors.lime,
+    'Amarelo': Colors.yellow,
+    'Âmbar': Colors.amber,
+    'Laranja': Colors.orange,
+    'Laranja Escuro': Colors.deepOrange,
+    'Marrom': Colors.brown,
 
-    'cinza': Colors.grey,
-    'cinzaazulado': Colors.blueGrey,
-    'preto': Colors.black,
-    'branco': Colors.white,
-    'semcor': Colors.transparent,
-
-    'rosaclaro': const Color.fromARGB(255, 248, 162, 191),
+    'Cinza': Colors.grey,
+    'Cinza Azulado': Colors.blueGrey,
+    'Preto': Colors.black,
+    'Branco': Colors.white,
+    'Sem Cor': Colors.transparent,
   };
 
   static Color getColor(String colorName) {
-    final normalizedKey = colorName
-        .replaceAll(RegExp(r'\s+'), '')
-        .toLowerCase();
+    final normalizedKey = colorName;
     return colorMap[normalizedKey] ?? Colors.transparent;
   }
 }

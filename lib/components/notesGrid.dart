@@ -2,6 +2,7 @@ import 'package:aniversariodois/components/noteGridTile.dart';
 import 'package:aniversariodois/core/models/folder.dart';
 import 'package:aniversariodois/core/models/note.dart';
 import 'package:aniversariodois/core/models/person.dart';
+import 'package:aniversariodois/core/models/transitionArg.dart';
 import 'package:aniversariodois/core/services/noteService.dart';
 import 'package:aniversariodois/core/utils/routes.dart';
 import 'package:flutter/material.dart';
@@ -57,10 +58,10 @@ class _NotesgridState extends State<Notesgrid> {
                   onTap: () async {
                     await Navigator.of(context).pushNamed(
                       Routes.NOTEFORM,
-                      arguments: {
-                        'person': widget.person,
-                        'note': menuList[index],
-                      },
+                      arguments: Transitionarg(
+                        person: widget.person,
+                        note: menuList[index],
+                      ),
                     );
                   },
                   child: Notegridtile(note: menuList[index]),
