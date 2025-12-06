@@ -82,7 +82,7 @@ class _FolderformpageState extends State<Folderformpage> {
                 controller: _controller,
               ),
               const SizedBox(height: 20),
-              Dropdowncolor(selectedColor),
+              Dropdowncolor(corSelecionada: selectedColor),
             ],
           ),
         ),

@@ -1,10 +1,14 @@
+import 'package:aniversariodois/core/models/settings.dart';
+import 'package:aniversariodois/core/services/settingsService.dart';
 import 'package:aniversariodois/core/utils/colorsMap.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class Dropdowncolor extends StatefulWidget {
   final Function corSelecionada;
+  final Settings? isSettings;
 
-  Dropdowncolor(this.corSelecionada);
+  Dropdowncolor({required this.corSelecionada, this.isSettings});
 
   @override
   State<Dropdowncolor> createState() => _DropdowncolorState();
@@ -18,7 +22,9 @@ class _DropdowncolorState extends State<Dropdowncolor> {
     // TODO: implement build
     return Card(
       child: DropdownButtonFormField(
-        initialValue: _cor,
+        initialValue: widget.isSettings != null
+            ? widget.isSettings!.color
+            : _cor,
         decoration: const InputDecoration(
           labelText: "cor",
           border: OutlineInputBorder(),
@@ -42,11 +48,22 @@ class _DropdowncolorState extends State<Dropdowncolor> {
             ),
           );
         }).toList(),
-        onChanged: (c) => setState(() {
-          _cor = c;
+        onChanged: (c) {
+          if (widget.isSettings != null) {
+            Provider.of<Settingsservice>(context, listen: false).updateSetting(
+              Settings(
+                id: widget.isSettings!.id,
+                color: c!,
+                mode: widget.isSettings!.mode,
+              ),
+            );
+          }
 
-          widget.corSelecionada(_cor);
-        }),
+          setState(() {
+            _cor = c;
+            widget.corSelecionada(_cor);
+          });
+        },
         validator: (c) => c == null ? 'Obrigatório' : null,
       ),
     );

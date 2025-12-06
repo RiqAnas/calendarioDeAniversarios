@@ -1,3 +1,4 @@
+import 'package:aniversariodois/components/sideBar.dart';
 import 'package:aniversariodois/pages/homePage.dart';
 import 'package:aniversariodois/pages/mainPage.dart';
 import 'package:flutter/material.dart';
@@ -23,6 +24,7 @@ class _TabspageState extends State<Tabspage> {
         title: Text(_pages[_selectedIndex]['title'] as String),
         centerTitle: true,
       ),
+      drawer: Sidebar(),
       bottomNavigationBar: NavigationBar(
         indicatorColor: Theme.of(context).colorScheme.primary,
         onDestinationSelected: (index) {

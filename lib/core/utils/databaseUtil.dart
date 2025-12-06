@@ -22,6 +22,12 @@ class Databaseutil {
           'CREATE TABLE folders (id TEXT PRIMARY KEY, personId TEXT NOT NULL, folderId TEXT, name TEXT NOT NULL, color TEXT NOT NULL, createdAt TEXT NOT NULL)',
         );
 
+        await db.execute(
+          'CREATE TABLE settings (id TEXT PRIMARY KEY, color TEXT NOT NULL, mode INTEGER NOT NULL)',
+        );
+
+        await db.rawInsert('INSERT INTO settings VALUES ("0", "Azul", "1")');
+
         await db.rawInsert(
           'INSERT INTO persons VALUES ("home", "notas", "semnumero", "${DateTime.now().toIso8601String()}", 0, 1)',
         );

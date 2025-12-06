@@ -4,4 +4,5 @@ class Routes {
   static const String NOTEFORM = '/noteform';
   static const String NOTEMENU = '/notemenu';
   static const String FOLDERFORM = '/folderform';
+  static const String SETTINGS = '/settings';
 }
