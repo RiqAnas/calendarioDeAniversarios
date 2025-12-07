@@ -62,35 +62,40 @@ class _NotesmenupageState extends State<Notesmenupage> {
           : null,
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 15.0),
-        child: Column(
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-                IconButton(
-                  onPressed: () {
-                    if (folder == null) {
-                      Navigator.of(context).pushNamed(
-                        Routes.FOLDERFORM,
-                        arguments: Transitionarg(person: person!),
-                      );
-                    } else {
-                      Navigator.of(context).pushNamed(
-                        Routes.FOLDERFORM,
-                        arguments: Transitionarg(
-                          person: person!,
-                          folder: folder,
-                        ),
-                      );
-                    }
-                  },
-                  icon: Icon(Icons.add, fontWeight: FontWeight.bold),
-                ),
-              ],
-            ),
-            Folderslist(person: person!, folders: folder),
-            Notesgrid(person: person!, folder: folder),
-          ],
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  IconButton(
+                    onPressed: () {
+                      if (folder == null) {
+                        Navigator.of(context).pushNamed(
+                          Routes.FOLDERFORM,
+                          arguments: Transitionarg(person: person!),
+                        );
+                      } else {
+                        Navigator.of(context).pushNamed(
+                          Routes.FOLDERFORM,
+                          arguments: Transitionarg(
+                            person: person!,
+                            folder: folder,
+                          ),
+                        );
+                      }
+                    },
+                    icon: Icon(Icons.add, fontWeight: FontWeight.bold),
+                  ),
+                ],
+              ),
+              SizedBox(
+                height: 120,
+                child: Folderslist(person: person!, folders: folder),
+              ),
+              Notesgrid(person: person!, folder: folder),
+            ],
+          ),
         ),
       ),
       floatingActionButton: ElevatedButton.icon(

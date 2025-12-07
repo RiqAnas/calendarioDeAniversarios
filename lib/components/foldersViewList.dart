@@ -9,13 +9,15 @@ import 'package:provider/provider.dart';
 
 class Foldersviewlist extends StatelessWidget {
   final Person person;
-  final int selectedIndex;
+  final int? selectedIndex;
   final Function navigateAndSelect;
+  final bool isEdit;
 
   Foldersviewlist({
     required this.person,
-    required this.selectedIndex,
+    this.selectedIndex,
     required this.navigateAndSelect,
+    this.isEdit = false,
   });
 
   @override
@@ -55,15 +57,22 @@ class Foldersviewlist extends StatelessWidget {
                   ),
                   title: Text(mainList[index].name),
                   selected: selectedIndex == 2,
-                  onTap: () => navigateAndSelect(
-                    context: context,
-                    index: 2,
-                    route: Routes.NOTEMENU,
-                    argument: Transitionarg(
-                      person: person,
-                      folder: mainList[index],
-                    ),
-                  ),
+                  onTap: () {
+                    if (!isEdit) {
+                      navigateAndSelect(
+                        context: context,
+                        index: 2,
+                        route: Routes.NOTEMENU,
+                        argument: Transitionarg(
+                          person: person,
+                          folder: mainList[index],
+                        ),
+                      );
+                    } else {
+                      navigateAndSelect(mainList[index]);
+                      Navigator.of(context).pop();
+                    }
+                  },
                 ),
                 Padding(
                   padding: EdgeInsets.only(
@@ -84,15 +93,22 @@ class Foldersviewlist extends StatelessWidget {
                         ),
                         title: Text(children[subindex].name),
                         selected: selectedIndex == 2,
-                        onTap: () => navigateAndSelect(
-                          context: context,
-                          index: 2,
-                          route: Routes.NOTEMENU,
-                          argument: Transitionarg(
-                            person: person,
-                            folder: children[subindex],
-                          ),
-                        ),
+                        onTap: () {
+                          if (!isEdit) {
+                            navigateAndSelect(
+                              context: context,
+                              index: 2,
+                              route: Routes.NOTEMENU,
+                              argument: Transitionarg(
+                                person: person,
+                                folder: children[subindex],
+                              ),
+                            );
+                          } else {
+                            navigateAndSelect(children[subindex]);
+                            Navigator.of(context).pop();
+                          }
+                        },
                       );
                     },
                   ),

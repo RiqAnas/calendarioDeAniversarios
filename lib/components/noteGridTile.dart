@@ -16,6 +16,7 @@ class Notegridtile extends StatelessWidget {
           child: SizedBox(
             width: double.maxFinite,
             child: Card(
+              elevation: 1,
               child: Padding(
                 padding: const EdgeInsets.all(15.0),
                 child: Column(

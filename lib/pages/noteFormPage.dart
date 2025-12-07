@@ -1,10 +1,12 @@
 import 'dart:math';
 
+import 'package:aniversariodois/components/folderDialog.dart';
 import 'package:aniversariodois/core/models/folder.dart';
 import 'package:aniversariodois/core/models/note.dart';
 import 'package:aniversariodois/core/models/person.dart';
 import 'package:aniversariodois/core/models/transitionArg.dart';
 import 'package:aniversariodois/core/services/noteService.dart';
+import 'package:aniversariodois/core/utils/colorsMap.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
@@ -29,34 +31,32 @@ class _NoteformpageState extends State<Noteformpage> {
   bool _initialized = false;
   bool _isEdit = false;
 
+  void selectedFolder(Folder? folder) {
+    setState(() {
+      _folder = folder;
+    });
+  }
+
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
     if (!_initialized) {
       final arg = ModalRoute.of(context)!.settings.arguments as Transitionarg;
-      if (arg.folder == null) {
-        if (arg.note == null) {
-          _person = arg.person;
-        } else if (arg.note != null) {
-          _person = arg.person;
-          _note = arg.note;
-          _isEdit = true;
-          _titleController.text = _note?.title ?? '';
-          _descriptionController.text = _note?.description ?? '';
-        }
-      } else {
-        if (arg.note == null) {
-          _person = arg.person;
-          _folder = arg.folder;
-        } else if (arg.note != null) {
-          _person = arg.person;
-          _note = arg.note;
-          _folder = arg.folder;
-          _isEdit = true;
-          _titleController.text = _note?.title ?? '';
-          _descriptionController.text = _note?.description ?? '';
-        }
+
+      if (arg.note == null) {
+        _person = arg.person;
+        _folder = arg.folder;
+      } else if (arg.note != null) {
+        _person = arg.person;
+        _note = arg.note;
+        _folder = arg.folder;
+        _isEdit = true;
+        _titleController.text = _note?.title != "Nova nota"
+            ? _note?.title ?? ''
+            : '';
+        _descriptionController.text = _note?.description ?? '';
       }
+
       _initialized = true;
     }
   }
@@ -76,16 +76,17 @@ class _NoteformpageState extends State<Noteformpage> {
             ),
           IconButton(
             onPressed: () async {
-              if (_titleController.text.isEmpty ||
-                  _descriptionController.text.isEmpty) {
+              if (_descriptionController.text.isEmpty) {
                 return;
               }
 
               final note = Note(
                 id: _isEdit ? _note!.id : Random().nextDouble().toString(),
                 personid: _person!.id,
-                folderid: _isEdit ? _note!.folderid : _folder?.id,
-                title: _titleController.text.trim(),
+                folderid: _folder?.id,
+                title: _titleController.text.isEmpty
+                    ? "Nova nota"
+                    : _titleController.text.trim(),
                 description: _descriptionController.text,
                 mark: _isMark ? 1 : 0,
                 date: _isMark ? _markedAt : null,
@@ -132,6 +133,60 @@ class _NoteformpageState extends State<Noteformpage> {
                   border: InputBorder.none,
                 ),
               ),
+              SizedBox(
+                height: MediaQuery.heightOf(context) * 0.03,
+                child: LayoutBuilder(
+                  builder: (context, constraints) => Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    spacing: 3,
+                    children: [
+                      Icon(
+                        Icons.star_outline,
+                        size: constraints.maxHeight * 0.8,
+                      ),
+                      const SizedBox(width: 10),
+                      Text(
+                        '|',
+                        style: TextStyle(fontSize: constraints.maxHeight * 0.8),
+                      ),
+                      const SizedBox(width: 10),
+                      Icon(
+                        Icons.folder_outlined,
+                        size: constraints.maxHeight * 0.8,
+                        color: _folder == null
+                            ? Theme.of(context).colorScheme.onSurface
+                            : Colorsmap.getColor(_folder!.color),
+                      ),
+                      GestureDetector(
+                        onTap: () {
+                          showDialog(
+                            context: context,
+                            builder: (context) {
+                              return Folderdialog(
+                                person: _person!,
+                                func: selectedFolder,
+                              );
+                            },
+                          );
+                        },
+                        child: Text(
+                          _folder == null ? "Sem pasta" : _folder!.name,
+                        ),
+                      ),
+                      const SizedBox(width: 10),
+                      Text("|"),
+                      const SizedBox(width: 10),
+                      Icon(
+                        Icons.person_outline,
+                        size: constraints.maxHeight * 0.8,
+                        color: Theme.of(context).colorScheme.primary,
+                      ),
+                      Text(_person!.id == 'home' ? "Sua nota" : _person!.nome!),
+                    ],
+                  ),
+                ),
+              ),
+              const SizedBox(height: 10),
               TextField(
                 maxLines: null,
                 clipBehavior: Clip.antiAlias,

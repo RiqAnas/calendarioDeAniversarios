@@ -87,7 +87,7 @@ class Folderslisttile extends StatelessWidget {
                   ),
 
                   Positioned(
-                    top: -(maxHeight * 0.2),
+                    top: -(maxHeight * 0.13),
                     child: Container(
                       width: maxWidth * 0.40,
                       height: maxHeight * 0.3,
