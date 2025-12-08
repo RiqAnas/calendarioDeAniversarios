@@ -24,6 +24,18 @@ class Folderservice extends ChangeNotifier {
     }
   }
 
+  Future<Folder?>? getFolder(String? id) async {
+    try {
+      if (id == null) {
+        return null;
+      }
+      final list = await Databaseutil.loadSingle('folders', id);
+      return Folder.fromJson(list.single);
+    } catch (error) {
+      throw "Erro ao tentar carregar pasta";
+    }
+  }
+
   Future<void> insertFolder(Folder folder) async {
     try {
       await Databaseutil.insert('folders', folder.toJson());

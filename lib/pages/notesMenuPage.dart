@@ -89,10 +89,7 @@ class _NotesmenupageState extends State<Notesmenupage> {
                   ),
                 ],
               ),
-              SizedBox(
-                height: 120,
-                child: Folderslist(person: person!, folders: folder),
-              ),
+              Folderslist(person: person!, folders: folder),
               Notesgrid(person: person!, folder: folder),
             ],
           ),

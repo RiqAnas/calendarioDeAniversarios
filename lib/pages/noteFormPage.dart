@@ -22,6 +22,7 @@ class _NoteformpageState extends State<Noteformpage> {
   TextEditingController _descriptionController = TextEditingController();
 
   DateTime? _markedAt;
+  bool _favorite = false;
 
   Person? _person;
   Note? _note;
@@ -50,6 +51,7 @@ class _NoteformpageState extends State<Noteformpage> {
         _person = arg.person;
         _note = arg.note;
         _folder = arg.folder;
+        _favorite = arg.note?.favorite ?? false;
         _isEdit = true;
         _titleController.text = _note?.title != "Nova nota"
             ? _note?.title ?? ''
@@ -76,10 +78,6 @@ class _NoteformpageState extends State<Noteformpage> {
             ),
           IconButton(
             onPressed: () async {
-              if (_descriptionController.text.isEmpty) {
-                return;
-              }
-
               final note = Note(
                 id: _isEdit ? _note!.id : Random().nextDouble().toString(),
                 personid: _person!.id,
@@ -92,6 +90,8 @@ class _NoteformpageState extends State<Noteformpage> {
                 date: _isMark ? _markedAt : null,
                 createdAt: DateTime.now(),
                 marked: _isMark ? 0 : null,
+                color: null,
+                favorite: _favorite,
               );
 
               _isEdit
@@ -140,9 +140,16 @@ class _NoteformpageState extends State<Noteformpage> {
                     mainAxisAlignment: MainAxisAlignment.start,
                     spacing: 3,
                     children: [
-                      Icon(
-                        Icons.star_outline,
-                        size: constraints.maxHeight * 0.8,
+                      GestureDetector(
+                        onTap: () {
+                          setState(() {
+                            _favorite = !_favorite;
+                          });
+                        },
+                        child: Icon(
+                          _favorite ? Icons.star : Icons.star_outline,
+                          size: constraints.maxHeight * 0.8,
+                        ),
                       ),
                       const SizedBox(width: 10),
                       Text(

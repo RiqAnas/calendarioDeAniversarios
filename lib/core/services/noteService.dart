@@ -24,6 +24,19 @@ class Noteservice extends ChangeNotifier {
     }
   }
 
+  Future<void> loadFavoritesPerPerson(String personId) async {
+    try {
+      final list = await Databaseutil.loadPerPerson('notes', personId);
+      final List<Note> notes = list.map((note) => Note.fromJson(note)).toList();
+
+      _notes.add(notes.where((note) => note.favorite == true).toList());
+    } catch (error) {
+      throw 'Erro ao carregar notas da pessoa';
+    } finally {
+      notifyListeners();
+    }
+  }
+
   Future<void> insertNote(Note note) async {
     try {
       await Databaseutil.insert('notes', note.toJson());

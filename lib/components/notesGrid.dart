@@ -11,8 +11,9 @@ import 'package:provider/provider.dart';
 class Notesgrid extends StatefulWidget {
   final Person person;
   final Folder? folder;
+  final bool favorite;
 
-  Notesgrid({required this.person, this.folder});
+  Notesgrid({required this.person, this.folder, this.favorite = false});
 
   @override
   State<Notesgrid> createState() => _NotesgridState();
@@ -22,10 +23,15 @@ class _NotesgridState extends State<Notesgrid> {
   @override
   void initState() {
     super.initState();
-    Provider.of<Noteservice>(
-      context,
-      listen: false,
-    ).loadNotesperPerson(widget.person.id);
+    widget.favorite
+        ? Provider.of<Noteservice>(
+            context,
+            listen: false,
+          ).loadFavoritesPerPerson(widget.person.id)
+        : Provider.of<Noteservice>(
+            context,
+            listen: false,
+          ).loadNotesperPerson(widget.person.id);
   }
 
   @override
@@ -39,9 +45,11 @@ class _NotesgridState extends State<Notesgrid> {
         } else if (!notes.hasData || notes.data!.isEmpty) {
           return const Center(child: Text("Sem notas"));
         } else {
-          List<Note> menuList = notes.data!
-              .where((note) => note.folderid == widget.folder?.id)
-              .toList();
+          List<Note> menuList = widget.favorite
+              ? notes.data!
+              : notes.data!
+                    .where((note) => note.folderid == widget.folder?.id)
+                    .toList();
 
           return GridView.builder(
             shrinkWrap: true,

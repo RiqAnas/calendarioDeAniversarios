@@ -71,6 +71,8 @@ class _SidebarState extends State<Sidebar> {
           _selectedIndex = 1;
         } else if (currentRoute == Routes.NOTEMENU) {
           _selectedIndex = 2;
+        } else if (currentRoute == Routes.FAVORITES) {
+          _selectedIndex = 3;
         }
       });
     });
@@ -126,6 +128,16 @@ class _SidebarState extends State<Sidebar> {
                   context: context,
                   index: 0,
                   route: Routes.HOME,
+                ),
+              ),
+              ListTile(
+                leading: const Icon(Icons.star),
+                title: const Text("Favoritos"),
+                selected: _selectedIndex == 3,
+                onTap: () => _navigateAndSelect(
+                  context: context,
+                  index: 3,
+                  route: Routes.FAVORITES,
                 ),
               ),
               ListTile(

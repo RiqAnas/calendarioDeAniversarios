@@ -8,6 +8,8 @@ class Note {
   DateTime createdAt;
   int? marked;
   DateTime? date;
+  String? color;
+  bool favorite;
 
   Note({
     required this.id,
@@ -17,7 +19,9 @@ class Note {
     required this.description,
     required this.mark,
     required this.createdAt,
+    required this.favorite,
     this.marked,
+    this.color,
     this.date,
   });
 
@@ -32,6 +36,8 @@ class Note {
       'marked': marked,
       'date': date?.toIso8601String(),
       'createdAt': createdAt.toIso8601String(),
+      'color': color,
+      'favorite': favorite ? 1 : 0,
     };
   }
 
@@ -46,6 +52,8 @@ class Note {
       marked: data['marked'],
       createdAt: DateTime.parse(data['createdAt']),
       date: data['date'] == null ? null : DateTime.parse(data['date']),
+      color: data['color'],
+      favorite: data['favorite'] == 1 ? true : false,
     );
   }
 }
