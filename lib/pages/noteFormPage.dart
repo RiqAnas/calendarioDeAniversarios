@@ -1,12 +1,13 @@
 import 'dart:math';
 
-import 'package:aniversariodois/components/folderDialog.dart';
+import 'package:aniversariodois/components/detailsNote.dart';
 import 'package:aniversariodois/core/models/folder.dart';
 import 'package:aniversariodois/core/models/note.dart';
 import 'package:aniversariodois/core/models/person.dart';
 import 'package:aniversariodois/core/models/transitionArg.dart';
+import 'package:aniversariodois/core/services/folderService.dart';
 import 'package:aniversariodois/core/services/noteService.dart';
-import 'package:aniversariodois/core/utils/colorsMap.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
@@ -38,6 +39,25 @@ class _NoteformpageState extends State<Noteformpage> {
     });
   }
 
+  void turnToFavorite(bool favState) {
+    setState(() {
+      _favorite = !favState;
+    });
+  }
+
+  void getFolder(String? id) async {
+    var result = await Provider.of<Folderservice>(
+      context,
+      listen: false,
+    ).getFolder(id);
+
+    if (mounted && result != null) {
+      setState(() {
+        _folder = result;
+      });
+    }
+  }
+
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
@@ -50,7 +70,7 @@ class _NoteformpageState extends State<Noteformpage> {
       } else if (arg.note != null) {
         _person = arg.person;
         _note = arg.note;
-        _folder = arg.folder;
+        getFolder(_note?.folderid);
         _favorite = arg.note?.favorite ?? false;
         _isEdit = true;
         _titleController.text = _note?.title != "Nova nota"
@@ -81,7 +101,7 @@ class _NoteformpageState extends State<Noteformpage> {
               final note = Note(
                 id: _isEdit ? _note!.id : Random().nextDouble().toString(),
                 personid: _person!.id,
-                folderid: _folder?.id,
+                folderid: _folder?.id == 'nulo' ? null : _folder?.id,
                 title: _titleController.text.isEmpty
                     ? "Nova nota"
                     : _titleController.text.trim(),
@@ -133,65 +153,13 @@ class _NoteformpageState extends State<Noteformpage> {
                   border: InputBorder.none,
                 ),
               ),
-              SizedBox(
-                height: MediaQuery.heightOf(context) * 0.03,
-                child: LayoutBuilder(
-                  builder: (context, constraints) => Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    spacing: 3,
-                    children: [
-                      GestureDetector(
-                        onTap: () {
-                          setState(() {
-                            _favorite = !_favorite;
-                          });
-                        },
-                        child: Icon(
-                          _favorite ? Icons.star : Icons.star_outline,
-                          size: constraints.maxHeight * 0.8,
-                        ),
-                      ),
-                      const SizedBox(width: 10),
-                      Text(
-                        '|',
-                        style: TextStyle(fontSize: constraints.maxHeight * 0.8),
-                      ),
-                      const SizedBox(width: 10),
-                      Icon(
-                        Icons.folder_outlined,
-                        size: constraints.maxHeight * 0.8,
-                        color: _folder == null
-                            ? Theme.of(context).colorScheme.onSurface
-                            : Colorsmap.getColor(_folder!.color),
-                      ),
-                      GestureDetector(
-                        onTap: () {
-                          showDialog(
-                            context: context,
-                            builder: (context) {
-                              return Folderdialog(
-                                person: _person!,
-                                func: selectedFolder,
-                              );
-                            },
-                          );
-                        },
-                        child: Text(
-                          _folder == null ? "Sem pasta" : _folder!.name,
-                        ),
-                      ),
-                      const SizedBox(width: 10),
-                      Text("|"),
-                      const SizedBox(width: 10),
-                      Icon(
-                        Icons.person_outline,
-                        size: constraints.maxHeight * 0.8,
-                        color: Theme.of(context).colorScheme.primary,
-                      ),
-                      Text(_person!.id == 'home' ? "Sua nota" : _person!.nome!),
-                    ],
-                  ),
-                ),
+              Detailsnote(
+                note: _note,
+                person: _person!,
+                favorite: turnToFavorite,
+                favState: _favorite,
+                selectedFolder: selectedFolder,
+                newFolder: _folder,
               ),
               const SizedBox(height: 10),
               TextField(

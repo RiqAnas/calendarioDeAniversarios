@@ -1,4 +1,5 @@
 import 'package:aniversariodois/components/foldersViewList.dart';
+import 'package:aniversariodois/core/models/folder.dart';
 import 'package:aniversariodois/core/models/person.dart';
 import 'package:aniversariodois/core/services/folderService.dart';
 import 'package:flutter/material.dart';
@@ -50,7 +51,15 @@ class _FolderdialogState extends State<Folderdialog> {
                     leading: Icon(Icons.folder_outlined, color: Colors.grey),
                     title: Text("Sem pasta"),
                     onTap: () {
-                      widget.func(null);
+                      widget.func(
+                        Folder(
+                          id: 'nulo',
+                          personId: '',
+                          name: '',
+                          color: '',
+                          createdAt: DateTime.now(),
+                        ),
+                      );
                       Navigator.of(context).pop();
                     },
                   ),

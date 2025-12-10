@@ -11,6 +11,12 @@ class Folderservice extends ChangeNotifier {
     return _folders.stream;
   }
 
+  Folder? _folder;
+
+  Folder? get folder {
+    return _folder;
+  }
+
   Future<void> loadFoldersperPerson(String personId) async {
     try {
       final list = await Databaseutil.loadPerPerson('folders', personId);
@@ -24,13 +30,13 @@ class Folderservice extends ChangeNotifier {
     }
   }
 
-  Future<Folder?>? getFolder(String? id) async {
+  Future<Folder?> getFolder(String? id) async {
     try {
       if (id == null) {
         return null;
       }
       final list = await Databaseutil.loadSingle('folders', id);
-      return Folder.fromJson(list.single);
+      return Folder.fromJson(list.first);
     } catch (error) {
       throw "Erro ao tentar carregar pasta";
     }
