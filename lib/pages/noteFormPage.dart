@@ -83,6 +83,36 @@ class _NoteformpageState extends State<Noteformpage> {
     }
   }
 
+  void updateOrSave(BuildContext context) async {
+    final note = Note(
+      id: _isEdit ? _note!.id : Random().nextDouble().toString(),
+      personid: _person!.id,
+      folderid: _folder?.id == 'nulo' ? null : _folder?.id,
+      title: _titleController.text.isEmpty
+          ? "Nova nota"
+          : _titleController.text.trim(),
+      description: _descriptionController.text,
+      mark: _isMark ? 1 : 0,
+      date: _isMark ? _markedAt : null,
+      createdAt: DateTime.now(),
+      marked: _isMark ? 0 : null,
+      color: null,
+      favorite: _favorite,
+    );
+
+    _isEdit
+        ? await Provider.of<Noteservice>(
+            context,
+            listen: false,
+          ).updateNote(note)
+        : await Provider.of<Noteservice>(
+            context,
+            listen: false,
+          ).insertNote(note);
+
+    Navigator.of(context).pop();
+  }
+
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
@@ -90,44 +120,55 @@ class _NoteformpageState extends State<Noteformpage> {
       appBar: AppBar(
         title: Text(!_isEdit ? 'Adicionar Nota' : 'Nota'),
         centerTitle: true,
+        leading: IconButton(
+          onPressed: _isEdit
+              ? () {
+                  updateOrSave(context);
+                }
+              : () {
+                  Navigator.of(context).pop();
+                },
+          icon: const Icon(Icons.arrow_back),
+        ),
         actions: [
           if (_isEdit)
-            IconButton(
-              onPressed: () {},
-              icon: Icon(Icons.delete, color: Colors.red),
+            PopupMenuButton<String>(
+              icon: const Icon(Icons.more_vert),
+              onSelected: (value) {
+                if (value == 'excluir') {
+                  Provider.of<Noteservice>(
+                    context,
+                    listen: false,
+                  ).deleteNote(_note!);
+                  Navigator.of(context).pop();
+                }
+                if (value == 'configuracoes') {}
+                if (value == 'export') {}
+              },
+              itemBuilder: (BuildContext context) {
+                return [
+                  const PopupMenuItem(
+                    value: 'excluir',
+                    child: Text("Excluir nota"),
+                  ),
+                  const PopupMenuItem(
+                    value: 'configuracoes',
+                    child: Text("Configurações"),
+                  ),
+                  const PopupMenuItem(
+                    value: 'export',
+                    child: Text("Exportar para"),
+                  ),
+                ];
+              },
             ),
-          IconButton(
-            onPressed: () async {
-              final note = Note(
-                id: _isEdit ? _note!.id : Random().nextDouble().toString(),
-                personid: _person!.id,
-                folderid: _folder?.id == 'nulo' ? null : _folder?.id,
-                title: _titleController.text.isEmpty
-                    ? "Nova nota"
-                    : _titleController.text.trim(),
-                description: _descriptionController.text,
-                mark: _isMark ? 1 : 0,
-                date: _isMark ? _markedAt : null,
-                createdAt: DateTime.now(),
-                marked: _isMark ? 0 : null,
-                color: null,
-                favorite: _favorite,
-              );
-
-              _isEdit
-                  ? await Provider.of<Noteservice>(
-                      context,
-                      listen: false,
-                    ).updateNote(note)
-                  : await Provider.of<Noteservice>(
-                      context,
-                      listen: false,
-                    ).insertNote(note);
-
-              Navigator.of(context).pop();
-            },
-            icon: Icon(Icons.save),
-          ),
+          if (!_isEdit)
+            IconButton(
+              onPressed: () {
+                updateOrSave(context);
+              },
+              icon: Icon(Icons.save),
+            ),
         ],
       ),
       body: SingleChildScrollView(
@@ -138,7 +179,10 @@ class _NoteformpageState extends State<Noteformpage> {
               TextField(
                 controller: _titleController,
                 cursorHeight: 50,
-                style: TextStyle(fontSize: 40, fontWeight: FontWeight.bold),
+                style: const TextStyle(
+                  fontSize: 40,
+                  fontWeight: FontWeight.bold,
+                ),
                 maxLines: null,
                 maxLength: 25,
                 clipBehavior: Clip.antiAlias,

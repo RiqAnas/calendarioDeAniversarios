@@ -16,19 +16,21 @@ class _FavoritespageState extends State<Favoritespage> {
     return Scaffold(
       appBar: AppBar(title: Text("Notas favoritas"), centerTitle: true),
       drawer: Sidebar(),
-      body: FutureBuilder(
-        future: Provider.of<Personservice>(context).getPerson('home'),
-        builder: (context, person) {
-          if (person.connectionState == ConnectionState.waiting) {
-            return Container();
-          }
+      body: SingleChildScrollView(
+        child: FutureBuilder(
+          future: Provider.of<Personservice>(context).getPerson('home'),
+          builder: (context, person) {
+            if (person.connectionState == ConnectionState.waiting) {
+              return Container();
+            }
 
-          if (!person.hasData || person.data == null) {
-            return Container();
-          }
+            if (!person.hasData || person.data == null) {
+              return Container();
+            }
 
-          return Notesgrid(person: person.data!, favorite: true);
-        },
+            return Notesgrid(person: person.data!, favorite: true);
+          },
+        ),
       ),
     );
   }
