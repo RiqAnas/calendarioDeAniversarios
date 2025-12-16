@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'package:aniversariodois/components/detailsNote.dart';
+import 'package:aniversariodois/components/popMenuNote.dart';
 import 'package:aniversariodois/core/models/folder.dart';
 import 'package:aniversariodois/core/models/note.dart';
 import 'package:aniversariodois/core/models/person.dart';
@@ -131,37 +132,7 @@ class _NoteformpageState extends State<Noteformpage> {
           icon: const Icon(Icons.arrow_back),
         ),
         actions: [
-          if (_isEdit)
-            PopupMenuButton<String>(
-              icon: const Icon(Icons.more_vert),
-              onSelected: (value) {
-                if (value == 'excluir') {
-                  Provider.of<Noteservice>(
-                    context,
-                    listen: false,
-                  ).deleteNote(_note!);
-                  Navigator.of(context).pop();
-                }
-                if (value == 'configuracoes') {}
-                if (value == 'export') {}
-              },
-              itemBuilder: (BuildContext context) {
-                return [
-                  const PopupMenuItem(
-                    value: 'excluir',
-                    child: Text("Excluir nota"),
-                  ),
-                  const PopupMenuItem(
-                    value: 'configuracoes',
-                    child: Text("Configurações"),
-                  ),
-                  const PopupMenuItem(
-                    value: 'export',
-                    child: Text("Exportar para"),
-                  ),
-                ];
-              },
-            ),
+          if (_isEdit) Popmenunote(_note!),
           if (!_isEdit)
             IconButton(
               onPressed: () {

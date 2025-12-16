@@ -6,4 +6,5 @@ class Routes {
   static const String FOLDERFORM = '/folderform';
   static const String SETTINGS = '/settings';
   static const String FAVORITES = '/favorites';
+  static const String NOTECONFIG = '/noteconfig';
 }

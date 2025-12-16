@@ -7,6 +7,7 @@ import 'package:aniversariodois/core/utils/colorsMap.dart';
 import 'package:aniversariodois/core/utils/routes.dart';
 import 'package:aniversariodois/pages/favoritesPage.dart';
 import 'package:aniversariodois/pages/folderFormPage.dart';
+import 'package:aniversariodois/pages/noteConfigPage.dart';
 import 'package:aniversariodois/pages/noteFormPage.dart';
 import 'package:aniversariodois/pages/notesMenuPage.dart';
 import 'package:aniversariodois/pages/personFormPage.dart';
@@ -71,6 +72,7 @@ class MyApp extends StatelessWidget {
         Routes.FORM: (_) => Personformpage(),
         Routes.NOTEFORM: (_) => Noteformpage(),
         Routes.NOTEMENU: (_) => Notesmenupage(),
+        Routes.NOTECONFIG: (_) => Noteconfigpage(),
         Routes.FOLDERFORM: (_) => Folderformpage(),
         Routes.SETTINGS: (_) => Settingspage(),
         Routes.FAVORITES: (_) => Favoritespage(),
