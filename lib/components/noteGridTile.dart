@@ -1,4 +1,5 @@
 import 'package:aniversariodois/core/models/note.dart';
+import 'package:aniversariodois/core/utils/colorsMap.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
@@ -16,6 +17,9 @@ class Notegridtile extends StatelessWidget {
           child: SizedBox(
             width: double.maxFinite,
             child: Card(
+              color: note.color != null
+                  ? Colorsmap.getColor(note.color!)
+                  : Theme.of(context).colorScheme.surfaceContainer,
               elevation: 1,
               child: Padding(
                 padding: const EdgeInsets.all(15.0),
@@ -27,7 +31,12 @@ class Notegridtile extends StatelessWidget {
                       note.description,
                       overflow: TextOverflow.ellipsis,
                       maxLines: 5,
-                      style: TextStyle(fontSize: 12),
+                      style: TextStyle(
+                        fontSize: 12,
+                        color: note.textcolor != null
+                            ? Colorsmap.getColor(note.textcolor!)
+                            : Theme.of(context).colorScheme.onSurface,
+                      ),
                     ),
                   ],
                 ),

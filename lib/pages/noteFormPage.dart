@@ -8,7 +8,8 @@ import 'package:aniversariodois/core/models/person.dart';
 import 'package:aniversariodois/core/models/transitionArg.dart';
 import 'package:aniversariodois/core/services/folderService.dart';
 import 'package:aniversariodois/core/services/noteService.dart';
-import 'package:aniversariodois/core/utils/markdownView.dart';
+import 'package:aniversariodois/core/utils/colorsMap.dart';
+import 'package:aniversariodois/components/markdownView.dart';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -30,6 +31,8 @@ class _NoteformpageState extends State<Noteformpage> {
   Person? _person;
   Note? _note;
   Folder? _folder;
+  Color? _background;
+  Color? _textColor;
 
   bool _isMark = false;
   bool _initialized = false;
@@ -46,6 +49,18 @@ class _NoteformpageState extends State<Noteformpage> {
   void turnToFavorite(bool favState) {
     setState(() {
       _favorite = !favState;
+    });
+  }
+
+  void changeBackColor(String backcolor) {
+    setState(() {
+      _background = Colorsmap.getColor(backcolor);
+    });
+  }
+
+  void changeTextColor(String textcolor) {
+    setState(() {
+      _textColor = Colorsmap.getColor(textcolor);
     });
   }
 
@@ -83,6 +98,8 @@ class _NoteformpageState extends State<Noteformpage> {
         getFolder(_note?.folderid);
         _favorite = arg.note?.favorite ?? false;
         _canChange = arg.note?.markview ?? false;
+        _background = Colorsmap.getColor(arg.note?.color ?? 'Sem Cor');
+        _textColor = Colorsmap.getColor(arg.note?.textcolor ?? 'Sem Cor');
         _isEdit = true;
         _titleController.text = _note?.title != "Nova nota"
             ? _note?.title ?? ''
@@ -107,8 +124,12 @@ class _NoteformpageState extends State<Noteformpage> {
       date: _isMark ? _markedAt : null,
       createdAt: DateTime.now(),
       marked: _isMark ? 0 : null,
-      color: _isEdit ? _note!.color : null,
-      textcolor: _isEdit ? _note!.textcolor : null,
+      color: _background != Colors.transparent && _background != null
+          ? Colorsmap.getColorName(_background!)
+          : null,
+      textcolor: _textColor != Colors.transparent && _textColor != null
+          ? Colorsmap.getColorName(_textColor!)
+          : null,
       markview: _canChange,
       favorite: _favorite,
     );
@@ -130,7 +151,13 @@ class _NoteformpageState extends State<Noteformpage> {
   Widget build(BuildContext context) {
     // TODO: implement build
     return Scaffold(
+      backgroundColor: _background != Colors.transparent
+          ? _background
+          : Theme.of(context).colorScheme.surface,
       appBar: AppBar(
+        backgroundColor: _background != Colors.transparent
+            ? _background
+            : Theme.of(context).colorScheme.surface,
         title: Text(!_isEdit ? 'Adicionar Nota' : 'Nota'),
         centerTitle: true,
         leading: IconButton(
@@ -144,7 +171,14 @@ class _NoteformpageState extends State<Noteformpage> {
           icon: const Icon(Icons.arrow_back),
         ),
         actions: [
-          if (_isEdit) Popmenunote(_note!, markview, _canChange),
+          if (_isEdit)
+            Popmenunote(
+              _note!,
+              markview,
+              _canChange,
+              changeBackColor,
+              changeTextColor,
+            ),
           if (!_isEdit)
             IconButton(
               onPressed: () {
@@ -162,9 +196,12 @@ class _NoteformpageState extends State<Noteformpage> {
               TextField(
                 controller: _titleController,
                 cursorHeight: 50,
-                style: const TextStyle(
+                style: TextStyle(
                   fontSize: 40,
                   fontWeight: FontWeight.bold,
+                  color: _textColor != Colors.transparent
+                      ? _textColor
+                      : Theme.of(context).colorScheme.onSurface,
                 ),
                 maxLines: null,
                 maxLength: 25,
@@ -221,7 +258,12 @@ class _NoteformpageState extends State<Noteformpage> {
                       clipBehavior: Clip.antiAlias,
                       keyboardType: TextInputType.multiline,
                       controller: _descriptionController,
-                      style: TextStyle(fontSize: 15),
+                      style: TextStyle(
+                        fontSize: 15,
+                        color: _textColor != Colors.transparent
+                            ? _textColor
+                            : Theme.of(context).colorScheme.onSurface,
+                      ),
                       decoration: InputDecoration(
                         counterText: '',
                         hint: Text(

@@ -32,4 +32,8 @@ class Colorsmap {
     final normalizedKey = colorName;
     return colorMap[normalizedKey] ?? Colors.transparent;
   }
+
+  static String getColorName(Color color) {
+    return colorMap.keys.firstWhere((value) => colorMap[value] == color);
+  }
 }

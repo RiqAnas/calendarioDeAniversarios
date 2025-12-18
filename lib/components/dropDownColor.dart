@@ -7,8 +7,13 @@ import 'package:provider/provider.dart';
 class Dropdowncolor extends StatefulWidget {
   final Function corSelecionada;
   final Settings? isSettings;
+  final String? initialColor;
 
-  Dropdowncolor({required this.corSelecionada, this.isSettings});
+  Dropdowncolor({
+    required this.corSelecionada,
+    this.isSettings,
+    this.initialColor,
+  });
 
   @override
   State<Dropdowncolor> createState() => _DropdowncolorState();
@@ -16,6 +21,12 @@ class Dropdowncolor extends StatefulWidget {
 
 class _DropdowncolorState extends State<Dropdowncolor> {
   String? _cor;
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    _cor = widget.initialColor;
+  }
 
   @override
   Widget build(BuildContext context) {

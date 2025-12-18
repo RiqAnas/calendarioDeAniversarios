@@ -1,4 +1,6 @@
-import 'package:aniversariodois/core/models/functionArg.dart';
+import 'package:aniversariodois/components/dropDownColor.dart';
+import 'package:aniversariodois/core/models/note.dart';
+import 'package:aniversariodois/core/models/superFuncArg.dart';
 import 'package:flutter/material.dart';
 
 class Noteconfigpage extends StatefulWidget {
@@ -8,6 +10,9 @@ class Noteconfigpage extends StatefulWidget {
 
 class _NoteconfigpageState extends State<Noteconfigpage> {
   late Function func;
+  late Function colorFunc;
+  late Function textFunc;
+  late Note note;
   bool? markdown;
   bool init = false;
 
@@ -15,11 +20,14 @@ class _NoteconfigpageState extends State<Noteconfigpage> {
   void didChangeDependencies() {
     super.didChangeDependencies();
     if (!init) {
-      Functionarg arg =
-          ModalRoute.of(context)!.settings.arguments as Functionarg;
+      Superfuncarg? arg =
+          ModalRoute.of(context)!.settings.arguments as Superfuncarg;
 
-      func = arg.func;
-      markdown = arg.value;
+      func = arg.func.func;
+      markdown = arg.func.value;
+      note = arg.func.note!;
+      colorFunc = arg.colorFunc;
+      textFunc = arg.textFunc;
       init = true;
     }
   }
@@ -30,6 +38,7 @@ class _NoteconfigpageState extends State<Noteconfigpage> {
       appBar: AppBar(title: Text('Configurações'), centerTitle: true),
       body: SingleChildScrollView(
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             SwitchListTile(
               value: markdown ?? false,
@@ -49,6 +58,26 @@ class _NoteconfigpageState extends State<Noteconfigpage> {
               },
             ),
             const SizedBox(height: 20),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: const Text(
+                "Cor da nota",
+                style: TextStyle(fontWeight: FontWeight.bold),
+              ),
+            ),
+            Dropdowncolor(corSelecionada: colorFunc, initialColor: note.color),
+            const SizedBox(height: 20),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: const Text(
+                "Cor da fonte",
+                style: TextStyle(fontWeight: FontWeight.bold),
+              ),
+            ),
+            Dropdowncolor(
+              corSelecionada: textFunc,
+              initialColor: note.textcolor,
+            ),
           ],
         ),
       ),

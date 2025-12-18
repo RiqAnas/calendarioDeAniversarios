@@ -1,5 +1,6 @@
 import 'package:aniversariodois/core/models/functionArg.dart';
 import 'package:aniversariodois/core/models/note.dart';
+import 'package:aniversariodois/core/models/superFuncArg.dart';
 import 'package:aniversariodois/core/services/noteService.dart';
 import 'package:aniversariodois/core/utils/exports/pdfUtil.dart';
 import 'package:aniversariodois/core/utils/routes.dart';
@@ -10,8 +11,16 @@ class Popmenunote extends StatelessWidget {
   final Note _note;
   final Function _func;
   final bool _value;
+  final Function _colorFunc;
+  final Function _textColorFunc;
 
-  Popmenunote(this._note, this._func, this._value);
+  Popmenunote(
+    this._note,
+    this._func,
+    this._value,
+    this._colorFunc,
+    this._textColorFunc,
+  );
 
   @override
   Widget build(BuildContext context) {
@@ -24,9 +33,14 @@ class Popmenunote extends StatelessWidget {
           Navigator.of(context).pop();
         }
         if (value == 'configuracoes') {
-          Navigator.of(
-            context,
-          ).pushNamed(Routes.NOTECONFIG, arguments: Functionarg(_value, _func));
+          Navigator.of(context).pushNamed(
+            Routes.NOTECONFIG,
+            arguments: Superfuncarg(
+              Functionarg(value: _value, func: _func, note: _note),
+              _textColorFunc,
+              _colorFunc,
+            ),
+          );
         }
         if (value == 'export') {
           await exportToPdf(note: _note, wcontext: context);
