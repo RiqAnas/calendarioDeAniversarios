@@ -9,6 +9,8 @@ class Note {
   int? marked;
   DateTime? date;
   String? color;
+  String? textcolor;
+  bool markview;
   bool favorite;
 
   Note({
@@ -22,6 +24,8 @@ class Note {
     required this.favorite,
     this.marked,
     this.color,
+    this.textcolor,
+    this.markview = false,
     this.date,
   });
 
@@ -37,6 +41,8 @@ class Note {
       'date': date?.toIso8601String(),
       'createdAt': createdAt.toIso8601String(),
       'color': color,
+      'textcolor': textcolor,
+      'markview': markview ? 1 : 0,
       'favorite': favorite ? 1 : 0,
     };
   }
@@ -53,6 +59,8 @@ class Note {
       createdAt: DateTime.parse(data['createdAt']),
       date: data['date'] == null ? null : DateTime.parse(data['date']),
       color: data['color'],
+      textcolor: data['textcolor'],
+      markview: data['markview'] == 1 ? true : false,
       favorite: data['favorite'] == 1 ? true : false,
     );
   }

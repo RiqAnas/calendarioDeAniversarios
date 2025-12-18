@@ -15,7 +15,7 @@ class Databaseutil {
         );
 
         await db.execute(
-          'CREATE TABLE notes (id TEXT PRIMARY KEY, personId TEXT NOT NULL, folderId TEXT, title TEXT NOT NULL, description TEXT, mark INTEGER NOT NULL, createdAt TEXT NOT NULL, marked INTEGER, date TEXT, color TEXT, favorite INTEGER NOT NULL, FOREIGN KEY (personId) REFERENCES persons (id))',
+          'CREATE TABLE notes (id TEXT PRIMARY KEY, personId TEXT NOT NULL, folderId TEXT, title TEXT NOT NULL, description TEXT, mark INTEGER NOT NULL, createdAt TEXT NOT NULL, marked INTEGER, date TEXT, color TEXT, textcolor TEXT, markview INTEGER NOT NULL, favorite INTEGER NOT NULL, FOREIGN KEY (personId) REFERENCES persons (id))',
         );
 
         await db.execute(

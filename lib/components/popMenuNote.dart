@@ -1,13 +1,17 @@
+import 'package:aniversariodois/core/models/functionArg.dart';
 import 'package:aniversariodois/core/models/note.dart';
 import 'package:aniversariodois/core/services/noteService.dart';
 import 'package:aniversariodois/core/utils/exports/pdfUtil.dart';
+import 'package:aniversariodois/core/utils/routes.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class Popmenunote extends StatelessWidget {
   final Note _note;
+  final Function _func;
+  final bool _value;
 
-  Popmenunote(this._note);
+  Popmenunote(this._note, this._func, this._value);
 
   @override
   Widget build(BuildContext context) {
@@ -19,7 +23,11 @@ class Popmenunote extends StatelessWidget {
           Provider.of<Noteservice>(context, listen: false).deleteNote(_note);
           Navigator.of(context).pop();
         }
-        if (value == 'configuracoes') {}
+        if (value == 'configuracoes') {
+          Navigator.of(
+            context,
+          ).pushNamed(Routes.NOTECONFIG, arguments: Functionarg(_value, _func));
+        }
         if (value == 'export') {
           await exportToPdf(note: _note, wcontext: context);
         }

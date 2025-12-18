@@ -8,6 +8,7 @@ import 'package:aniversariodois/core/models/person.dart';
 import 'package:aniversariodois/core/models/transitionArg.dart';
 import 'package:aniversariodois/core/services/folderService.dart';
 import 'package:aniversariodois/core/services/noteService.dart';
+import 'package:aniversariodois/core/utils/markdownView.dart';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -33,6 +34,8 @@ class _NoteformpageState extends State<Noteformpage> {
   bool _isMark = false;
   bool _initialized = false;
   bool _isEdit = false;
+  bool _canChange = false;
+  bool _markdown = false;
 
   void selectedFolder(Folder? folder) {
     setState(() {
@@ -43,6 +46,12 @@ class _NoteformpageState extends State<Noteformpage> {
   void turnToFavorite(bool favState) {
     setState(() {
       _favorite = !favState;
+    });
+  }
+
+  void markview(bool togglemark) {
+    setState(() {
+      _canChange = togglemark;
     });
   }
 
@@ -73,6 +82,7 @@ class _NoteformpageState extends State<Noteformpage> {
         _note = arg.note;
         getFolder(_note?.folderid);
         _favorite = arg.note?.favorite ?? false;
+        _canChange = arg.note?.markview ?? false;
         _isEdit = true;
         _titleController.text = _note?.title != "Nova nota"
             ? _note?.title ?? ''
@@ -97,7 +107,9 @@ class _NoteformpageState extends State<Noteformpage> {
       date: _isMark ? _markedAt : null,
       createdAt: DateTime.now(),
       marked: _isMark ? 0 : null,
-      color: null,
+      color: _isEdit ? _note!.color : null,
+      textcolor: _isEdit ? _note!.textcolor : null,
+      markview: _canChange,
       favorite: _favorite,
     );
 
@@ -132,7 +144,7 @@ class _NoteformpageState extends State<Noteformpage> {
           icon: const Icon(Icons.arrow_back),
         ),
         actions: [
-          if (_isEdit) Popmenunote(_note!),
+          if (_isEdit) Popmenunote(_note!, markview, _canChange),
           if (!_isEdit)
             IconButton(
               onPressed: () {
@@ -168,30 +180,61 @@ class _NoteformpageState extends State<Noteformpage> {
                   border: InputBorder.none,
                 ),
               ),
-              Detailsnote(
-                note: _note,
-                person: _person!,
-                favorite: turnToFavorite,
-                favState: _favorite,
-                selectedFolder: selectedFolder,
-                newFolder: _folder,
-              ),
+              !_canChange
+                  ? Detailsnote(
+                      note: _note,
+                      person: _person!,
+                      favorite: turnToFavorite,
+                      favState: _favorite,
+                      selectedFolder: selectedFolder,
+                      newFolder: _folder,
+                    )
+                  : Row(
+                      children: [
+                        Detailsnote(
+                          note: _note,
+                          person: _person!,
+                          favorite: turnToFavorite,
+                          favState: _favorite,
+                          selectedFolder: selectedFolder,
+                          newFolder: _folder,
+                        ),
+                        const Spacer(),
+                        IconButton(
+                          onPressed: () {
+                            setState(() {
+                              _markdown = !_markdown;
+                            });
+                          },
+                          icon: Icon(
+                            !_markdown
+                                ? Icons.visibility_outlined
+                                : Icons.visibility_off_outlined,
+                          ),
+                        ),
+                      ],
+                    ),
               const SizedBox(height: 10),
-              TextField(
-                maxLines: null,
-                clipBehavior: Clip.antiAlias,
-                keyboardType: TextInputType.multiline,
-                controller: _descriptionController,
-                style: TextStyle(fontSize: 15),
-                decoration: InputDecoration(
-                  counterText: '',
-                  hint: Text(
-                    'Descrição',
-                    style: TextStyle(fontSize: 15, color: Colors.grey),
-                  ),
-                  border: InputBorder.none,
-                ),
-              ),
+              !_markdown
+                  ? TextField(
+                      maxLines: null,
+                      clipBehavior: Clip.antiAlias,
+                      keyboardType: TextInputType.multiline,
+                      controller: _descriptionController,
+                      style: TextStyle(fontSize: 15),
+                      decoration: InputDecoration(
+                        counterText: '',
+                        hint: Text(
+                          'Descrição',
+                          style: TextStyle(fontSize: 15, color: Colors.grey),
+                        ),
+                        border: InputBorder.none,
+                      ),
+                    )
+                  : Markdownview(
+                      _titleController.text,
+                      _descriptionController.text,
+                    ),
             ],
           ),
         ),
